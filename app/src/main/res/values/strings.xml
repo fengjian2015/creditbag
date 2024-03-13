@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Creditbag</string>
+    <string name="http_network_error">Excepción del servidor</string>
+</resources>
