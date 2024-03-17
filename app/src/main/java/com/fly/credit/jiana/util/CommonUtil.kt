@@ -35,6 +35,14 @@ object CommonUtil {
         }
     }
 
+    fun stringToLong(i: String): Long? {
+        try {
+            return i.toLong()
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
+        return 0L
+    }
 
     /**
      * get App versionCode
@@ -114,7 +122,13 @@ object CommonUtil {
     }
 
     fun tackPhoto():File?{
-        var photoFile = File(getImageDir(),  DateTool.getServerTimestamp().toString() + ".jpg")
+        //判断文件夹是否存在,如果不存在则创建文件夹
+//        var photoFile = File(getImageDir(),  DateTool.getServerTimestamp().toString() + ".jpg")
+//        var photoFile = File(FileUtil1.getInnerImgPath(MyApplication.application) + "/compressImg/",DateTool.getServerTimestamp().toString() + ".jpg")
+//        if (photoFile.parentFile != null && !photoFile.parentFile?.exists()!!) {
+//            photoFile.parentFile?.mkdirs()
+//        }
+        var photoFile = File(ComUtil.getImageDir(),DateTool.getServerTimestamp().toString() + ".jpg")
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         var mImageUri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             //兼容7.0以上
@@ -134,4 +148,5 @@ object CommonUtil {
     fun getProviderString() : String{
         return MyApplication.application.packageName.toString() + ".provider"
     }
+
 }

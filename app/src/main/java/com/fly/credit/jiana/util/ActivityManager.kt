@@ -9,6 +9,8 @@ import java.lang.ref.WeakReference
 
 
 object ActivityManager {
+    var back_num = 0
+    var activityAount = 0
     private var sCurrentActivityWeakRef: WeakReference<Activity>? = null
 
     fun getCurrentActivity(): Activity? {
@@ -26,6 +28,7 @@ object ActivityManager {
             }
 
             override fun onActivityStarted(p0: Activity) {
+                activityAount++
             }
 
             override fun onActivityResumed(p0: Activity) {
@@ -36,6 +39,11 @@ object ActivityManager {
             }
 
             override fun onActivityStopped(p0: Activity) {
+                activityAount--
+                if (activityAount == 0) {
+                    //后台
+                    back_num++
+                }
             }
 
             override fun onActivitySaveInstanceState(p0: Activity, p1: Bundle) {

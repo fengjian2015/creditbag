@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="#4D000000"
+    xmlns:tootls="http://schemas.android.com/tools"
+    >
+    <LinearLayout
+        android:layout_width="290dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:background="@drawable/bg_update"
+        android:paddingBottom="20dp"
+        >
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="16dp"
+            android:src="@mipmap/ic_update"/>
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:paddingHorizontal="45dp"
+            android:textColor="#333333"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            tootls:text="New Version Availabl"/>
+        <Button
+            android:id="@+id/buttonUpload"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Upgrade Now"
+            android:layout_marginTop="18dp"
+            android:background="@drawable/bg_button"
+            android:textColor="#ffffff"
+            android:layout_marginHorizontal="46dp"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/Later"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Later"
+            android:layout_marginTop="10dp"
+            android:background="@null"
+            android:textColor="#FA5100"
+            android:layout_marginHorizontal="46dp"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+</LinearLayout>

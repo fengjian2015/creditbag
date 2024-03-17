@@ -2,7 +2,6 @@ package com.fly.credit.jiana.network;
 
 
 
-
 import com.fly.credit.jiana.util.LogUtil;
 
 import java.io.ByteArrayOutputStream;

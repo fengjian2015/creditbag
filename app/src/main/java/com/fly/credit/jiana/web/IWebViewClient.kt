@@ -1,28 +1,33 @@
 package com.fly.credit.jiana.web
 
-import android.content.Context
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
+import android.net.http.SslError
 import android.os.Build
 import android.text.TextUtils
+import android.view.KeyEvent
 import android.view.View
 import android.webkit.*
 import android.widget.ProgressBar
-import com.fly.credit.jiana.IWebView
+import android.widget.TextView
+import androidx.annotation.RequiresApi
+import com.fly.credit.jiana.MyApplication
+import com.fly.credit.jiana.R
+import com.fly.credit.jiana.util.ActivityManager
 import com.fly.credit.jiana.util.LogUtil
 
-class IWebViewClient constructor(iWebView: IWebView) : WebViewClient() {
+class IWebViewClient constructor(progressBar: ProgressBar, textView: TextView) : WebViewClient() {
     private var isLoadSuccess = true
-    private var iWebView: IWebView? = null
-    private var context: Context? = null
+    private var textView :TextView?= null
     private var progressBar: ProgressBar? = null
     private var mUrl: String? = null
 
     init {
-        this.iWebView = iWebView;
-        this.context = iWebView.context
-        progressBar = iWebView.getProgressbar()
+        this.progressBar = progressBar
+        this.textView = textView
     }
 
     override fun onPageStarted(view: WebView?, url: String, favicon: Bitmap?) {
@@ -32,7 +37,29 @@ class IWebViewClient constructor(iWebView: IWebView) : WebViewClient() {
         this.progressBar?.visibility = View.VISIBLE
         this.progressBar?.progress = 0
         isLoadSuccess = true
-        iWebView?.showNormalView()
+    }
+
+    override fun onReceivedSslError(view: WebView?, handler: SslErrorHandler, error: SslError?) {
+        val mHandler: SslErrorHandler
+        mHandler = handler
+        val builder = AlertDialog.Builder(ActivityManager.getCurrentActivity())
+        builder.setMessage(MyApplication.application.getString(R.string.webview_ssl_hint))
+        builder.setPositiveButton(
+            MyApplication.application.getString(R.string.webview_ssl_go)
+        ) { dialog, which -> mHandler.proceed() }
+        builder.setNegativeButton(
+            MyApplication.application.getString(R.string.webview_ssl_cancel)
+        ) { dialog, which -> mHandler.cancel() }
+        builder.setOnKeyListener { dialog: DialogInterface, keyCode: Int, event: KeyEvent ->
+            if (event.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                mHandler.cancel()
+                dialog.dismiss()
+                return@setOnKeyListener true
+            }
+            false
+        }
+        val dialog = builder.create()
+        dialog.show()
     }
 
 
@@ -78,15 +105,10 @@ class IWebViewClient constructor(iWebView: IWebView) : WebViewClient() {
     override fun onPageFinished(view: WebView?, url: String) {
         super.onPageFinished(view, url)
         LogUtil.d("onPageFinished->$url")
-        LogUtil.d("onPageFinished->isLoadSuccess->$isLoadSuccess")
-        if (view != null) {
-            view.title?.let { iWebView?.getOnTitleListener()?.webTitle(it) }
-        }
         progressBar?.visibility = View.GONE
-        if (!isLoadSuccess) {
-            iWebView?.showFailView()
-        } else {
-            iWebView?.showNormalView()
+        if (!TextUtils.isEmpty(view!!.title)) {
+            textView?.post(Runnable { textView?.text = view.title })
+            return
         }
     }
 
@@ -103,10 +125,10 @@ class IWebViewClient constructor(iWebView: IWebView) : WebViewClient() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             return
         }
-        iWebView?.showFailView()
         isLoadSuccess = false
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onReceivedError(
         webView: WebView?,
         webResourceRequest: WebResourceRequest,
@@ -115,7 +137,6 @@ class IWebViewClient constructor(iWebView: IWebView) : WebViewClient() {
         super.onReceivedError(webView, webResourceRequest, webResourceError)
         LogUtil.d("页面加载错误：222:::"+ webResourceError.description + ":::" + webResourceRequest.url)
         if (webResourceRequest.isForMainFrame) {
-            iWebView?.showFailView()
             isLoadSuccess = false
         }
     }
@@ -129,7 +150,6 @@ class IWebViewClient constructor(iWebView: IWebView) : WebViewClient() {
         try {
             if (webResourceRequest != null && webResourceRequest.isForMainFrame && mUrl == webResourceRequest.url.toString() && webResourceResponse.statusCode != 403) {
                 LogUtil.d("页面加载错误：333:::" + webResourceResponse.statusCode + ",信息：" + webResourceResponse.reasonPhrase + (mUrl == webResourceRequest.url.toString()))
-                iWebView?.showFailView()
                 isLoadSuccess = false
             }
         } catch (e: Exception) {

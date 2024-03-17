@@ -11,6 +11,21 @@ object DateTool {
     const val FMT_DATE_TIME2 = "yyyy:MM:dd HH:mm:ss"
 
     /**
+     * 將时间戳转日期
+     *
+     * @param format
+     * @return
+     */
+    fun getTimeFromLongYMDHMS(time: Long): String? {
+        try {
+            return SimpleDateFormat(FMT_DATE_TIME).format(time)
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
+        return ""
+    }
+
+    /**
      * 获取服务器时间戳
      */
     fun getServerTimestamp(): Long {

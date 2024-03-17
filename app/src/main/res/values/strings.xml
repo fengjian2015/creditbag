@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Creditbag</string>
-    <string name="http_network_error">Excepción del servidor</string>
+    <string name="webview_ssl_hint">SSL certificate validation failed</string>
+    <string name="webview_ssl_go">Go on</string>
+    <string name="webview_ssl_cancel">Cancel</string>
+    <string name="network_error">network_error</string>
+    <string name="permission_denied">Authorize permissions before submitting application</string>
 </resources>

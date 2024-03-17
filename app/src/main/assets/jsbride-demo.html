@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+   <meta charset="utf-8">
+   <title>JS交互demo</title>
+   <style>
+      *{
+         margin: 0;
+         padding: 0;
+      }
+      button {
+         padding: 1rem 2rem;
+         /* height: 5rem; */
+         font-size: 1.4rem;
+         margin: 0.2rem;
+      }
+   </style>
+     <script src="https://cdn.bootcdn.net/ajax/libs/vConsole/3.14.6/vconsole.min.js"></script>
+   <script>
+      ;
+      (function (win, lib) {
+         var doc = win.document;
+         var docEl = doc.documentElement;
+         var metaEl = doc.querySelector('meta[name="viewport"]');
+         var flexibleEl = doc.querySelector('meta[name="flexible"]');
+         var dpr = 0;
+         var scale = 0;
+         var tid;
+         var flexible = lib.flexible || (lib.flexible = {});
+         if (metaEl) {
+            console.warn('将根据已有的meta标签来设置缩放比例');
+            var match = metaEl.getAttribute('content').match(/initial\-scale=([\d\.]+)/);
+            if (match) {
+               scale = parseFloat(match[1]);
+               dpr = parseInt(1 / scale);
+            }
+         } else if (flexibleEl) {
+            var content = flexibleEl.getAttribute('content');
+            if (content) {
+               var initialDpr = content.match(/initial\-dpr=([\d\.]+)/);
+               var maximumDpr = content.match(/maximum\-dpr=([\d\.]+)/);
+               if (initialDpr) {
+                  dpr = parseFloat(initialDpr[1]);
+                  scale = parseFloat((1 / dpr).toFixed(2));
+               }
+               if (maximumDpr) {
+                  dpr = parseFloat(maximumDpr[1]);
+                  scale = parseFloat((1 / dpr).toFixed(2));
+               }
+            }
+         }
+         if (!dpr && !scale) {
+            var isAndroid = win.navigator.appVersion.match(/android/gi);
+            var isIos = win.navigator.appVersion.match(/iphone|ipad/gi);
+            var devicePixelRatio = win.devicePixelRatio;
+            if (isIos) {
+               // iOS下，对于2和3的屏，用2倍的方案，其余的用1倍方案
+               if (devicePixelRatio >= 3 && (!dpr || dpr >= 3)) {
+                  dpr = 3;
+               } else if (devicePixelRatio >= 2 && (!dpr || dpr >= 2)) {
+                  dpr = 2;
+               } else {
+                  dpr = 1;
+               }
+            } else {
+               // 其他设备下，仍旧使用1倍的方案
+               dpr = 1;
+            }
+            scale = 1 / dpr;
+         }
+         docEl.setAttribute('data-dpr', dpr);
+         if (!metaEl) {
+            metaEl = doc.createElement('meta');
+            metaEl.setAttribute('name', 'viewport');
+            metaEl.setAttribute('content', 'initial-scale=' + scale + ', maximum-scale=' + scale +
+               ', minimum-scale=' + scale + ', user-scalable=no');
+            if (docEl.firstElementChild) {
+               docEl.firstElementChild.appendChild(metaEl);
+            } else {
+               var wrap = doc.createElement('div');
+               wrap.appendChild(metaEl);
+               doc.write(wrap.innerHTML);
+            }
+         }
+
+         function refreshRem() {
+            var width = docEl.getBoundingClientRect().width;
+            if (width / dpr > 640) {
+               width = 640 * dpr;
+            }
+            var rem = Math.floor(width / 750 * 20 * 100) / 100;
+            docEl.style.fontSize = rem + 'px';
+            flexible.rem = win.rem = rem;
+         }
+         win.addEventListener('resize', function () {
+            clearTimeout(tid);
+            tid = setTimeout(refreshRem, 300);
+         }, false);
+         win.addEventListener('pageshow', function (e) {
+            if (e.persisted) {
+               clearTimeout(tid);
+               tid = setTimeout(refreshRem, 300);
+            }
+         }, false);
+         if (doc.readyState === 'complete') {
+            doc.body.style.fontSize = 12 * dpr + 'px';
+         } else {
+            doc.addEventListener('DOMContentLoaded', function (e) {
+               doc.body.style.fontSize = 12 * dpr + 'px';
+            }, false);
+         }
+         refreshRem();
+         flexible.dpr = win.dpr = dpr;
+         flexible.refreshRem = refreshRem;
+         flexible.rem2px = function (d) {
+            var val = parseFloat(d) * this.rem;
+            if (typeof d === 'string' && d.match(/rem$/)) {
+               val += 'px';
+            }
+            return val;
+         }
+         flexible.px2rem = function (d) {
+            var val = parseFloat(d) / this.rem;
+            if (typeof d === 'string' && d.match(/px$/)) {
+               val += 'rem';
+            }
+            return val;
+         }
+      })(window, window['lib'] || (window['lib'] = {}));
+   </script>
+   <script>
+      /************************配置项 start*******************************/
+      var jsbridgeConfig = {
+         action: 'action', // 传递给app的方法名称的key值
+         requestId: 'id', // 标识符
+         data: 'data', //app返回给h5数据的data的key值
+         status: 'status', //app返回给h5数据的status的key值
+         JSCallback: 'JSForCreditBagCallback', //app调用h5的回调函数
+      }
+      var actionConfig = {
+         invokeUserInfo: { //获取用户信息
+            requestId: '1',
+            action: 'invokeForCreditBagUserInfo'
+         },
+         invokeCopyClip: { //复制到剪切板
+            requestId: '2',
+            action: 'invokeForCreditBagCopyClip'
+         },
+         invokeSignOut: { //退出登陆
+            requestId: '3',
+            action: 'invokeForCreditBagSignOut'
+         },
+         /************风控信息相关 *****************/
+         invokeDeviceInfo: { // 设备信息
+            requestId: '4',
+            action: 'invokeForCreditBagDeviceInfo'
+         },
+         invokeInstallationInfo: { // 安装信息
+            requestId: '5',
+            action: 'invokeForCreditBagInstallationInfo'
+         },
+         invokeSmsInfo: { //短信信息
+            requestId: '6',
+            action: 'invokeForCreditBagSmsInfo'
+         },
+         invokeLocationInfo: { // 定位信息
+            requestId: '7',
+            action: 'invokeForCreditBagLocationInfo'
+         },
+         invokeCallLog: {
+            requestId: '8',
+            action: 'invokeForCreditBagCallLog'
+         },
+         invokeCalendarInfo: {
+            requestId: '16',
+            action: 'invokeForCreditBagCalendarInfo'
+         },
+         /************风控信息相关 end *****************/
+         invokeSelectContact: { //选择通讯录人员
+            requestId: '9',
+            action: 'invokeForCreditBagSelectContact'
+         },
+         invokeAppsFlyer: { //埋点
+            requestId: '10',
+            action: 'invokeForCreditBagAppsFlyer'
+         },
+         invokeTackPhoto: { //拍照
+            requestId: '11',
+            action: 'invokeForCreditBagTackPhoto'
+         },
+         forwardOutside: { //打开带header的webview
+            requestId: '12',
+            action: 'invokeForCreditBagForwardOutside'
+         },
+         appServiceTime: { // 传递服务器时间给app
+            requestId: '13',
+            action: 'invokeForCreditBagAppServiceTime'
+         },
+         invokeOpenBrowser: { //打开带header的webview
+            requestId: '20',
+            action: 'invokeForCreditBagOpenBrowser'
+         },
+      }
+      /************************配置项 end*******************************/
+
+      //  var appClient  = {
+      //    appinvoke() {}
+      //  }
+      var _jsBridge = {
+         appInvoke: function (action = '') {
+            var appInvokeAction = actionConfig[action]
+            if (!appInvokeAction) {
+               throw `no appInvoke type:${action}`
+            }
+            return function (data = {}) {
+               try {
+                  CreditBagClient.appForCreditBagInvoke(JSON.stringify({
+                     // ...appInvokeAction,
+                     [jsbridgeConfig.action]: appInvokeAction.action,
+                     [jsbridgeConfig.requestId]: appInvokeAction.requestId,
+                     [jsbridgeConfig.data]: data,
+                  }));
+                  console.log('jsBridge调用：', JSON.stringify({
+                     // ...appInvokeAction,
+                     [jsbridgeConfig.action]: appInvokeAction.action,
+                     [jsbridgeConfig.requestId]: appInvokeAction.requestId,
+                     [jsbridgeConfig.data]: data,
+                  }));
+               } catch (error) {
+                  // throw error
+                  console.error(error)
+               }
+            }
+         },
+         _JSBridgeCallback: function (cb) {
+            return function (res) {
+               if (Object.prototype.toString.call(res) === '[object String]') {
+                  res = JSON.parse(res)
+               }
+               if (res[jsbridgeConfig.data] && Object.prototype.toString.call(res[jsbridgeConfig.data]) ===
+                  '[object String]') {
+                  res[jsbridgeConfig.data] = JSON.parse(res[jsbridgeConfig.data])
+               }
+               if (res[jsbridgeConfig.status] != 0) {
+                  // const msg = `${res.action}:${res.status}:${(res.errorMsg || errMsgMap[res.status] || 'unknown mistake')}`
+                  // alert(msg)
+                  return
+               }
+               cb && cb(res[jsbridgeConfig.data], res)
+            }
+         },
+         _setWindowJsbridgeCB: function (cb) {
+            window[jsbridgeConfig.JSCallback] = _jsBridge._JSBridgeCallback(cb)
+         }
+      }
+
+
+      var _invokeUserInfo = _jsBridge.appInvoke('invokeUserInfo') // 获取用户信息
+      var _invokeCopyClip = _jsBridge.appInvoke('invokeCopyClip') // 复制到剪切板
+      var _invokeSignOut = _jsBridge.appInvoke('invokeSignOut') // 退出登陆
+
+      var _invokeDeviceInfo = _jsBridge.appInvoke('invokeDeviceInfo') // 设备信息
+      var _invokeInstallationInfo = _jsBridge.appInvoke('invokeInstallationInfo') // 安装信息
+      var _invokeLocationInfo = _jsBridge.appInvoke('invokeLocationInfo') // 定位信息
+      var _invokeSmsInfo = _jsBridge.appInvoke('invokeSmsInfo') // 短信信息
+      var _invokeCallLog = _jsBridge.appInvoke('invokeCallLog') // 通话记录信息
+      // var _invokeAlbumInfo = _jsBridge.appInvoke('invokeAlbumInfo') // 相册信息
+      // var _invokeContactInfo = _jsBridge.appInvoke('invokeContactInfo') // 联系人信息
+
+      var _invokeCalendarInfo = _jsBridge.appInvoke('invokeCalendarInfo') // 日历信息
+      // var _invokeAppDataUseInfo = _jsBridge.appInvoke('invokeAppDataUseInfo') // 流量使用信息
+      // var _invokeAppUploadRecordInfo = _jsBridge.appInvoke('invokeAppUploadRecordInfo') // app前台使用时间信息
+
+
+      var _invokeSelectContact = _jsBridge.appInvoke('invokeSelectContact') // 选择通讯录人员
+      var _invokeTackPhoto = _jsBridge.appInvoke('invokeTackPhoto') // 拍照
+      var _invokeAppsFlyer = _jsBridge.appInvoke('invokeAppsFlyer') // 埋点
+      var _forwardOutside = _jsBridge.appInvoke('forwardOutside') // 打开webview
+      var _invokeAppServiceTime = _jsBridge.appInvoke('appServiceTime') // 打开webview
+      var _invokeOpenBrowser = _jsBridge.appInvoke('invokeOpenBrowser') // 打开webview
+      var _JSBridgeCallback = _jsBridge._JSBridgeCallback; // JSBridgeCallback
+      var _setWindowJsbridgeCB = _jsBridge._setWindowJsbridgeCB; // JSBridgeCallback
+
+
+      _setWindowJsbridgeCB(function (res) {
+         console.log(JSON.stringify(res));
+         alert(JSON.stringify(res))
+      })
+   </script>
+</head>
+
+<body>
+   <script>
+      var vConsole = new VConsole();
+    </script>
+   <button type="button" id="button1" onclick="_invokeCopyClip({
+      value: 'Android复制到剪切板'
+   })">Android复制到剪切板</button>
+   <button type="button" id="button2" onclick="_invokeUserInfo()">获取用户信息</button>
+   <button type="button" id="button3" onclick="_invokeSignOut()">退出登录</button>
+   <button type="button" id="button6" onclick="_invokeDeviceInfo({
+      ip: '115.236.100.178'
+   })">设备信息收集</button>
+   <button type="button" id="button7" onclick="_invokeInstallationInfo()">安装信息收集</button>
+   <button type="button" id="button8" onclick="_invokeLocationInfo()">位置信息收集</button>
+   <button type="button" id="button9" onclick="_invokeSmsInfo()">短信信息收集</button>
+   <button type="button" id="button10" onclick="_invokeCallLog()">通话记录收集</button>
+   <!-- <button type="button" id="button10" onclick="_invokeAlbumInfo()">相册信息收集</button> -->
+   <!-- <button type="button" id="button10" onclick="_invokeContactInfo()">通讯录信息收集</button> -->
+   <button type="button" id="button11" onclick="_invokeSelectContact()">选择通讯录信息</button>
+
+   <button type="button" id="button21" onclick="_invokeCalendarInfo()">选择日历信息</button>
+   <!-- <button type="button" id="button22" onclick="_invokeAppDataUseInfo()">选择流量使用信息</button> -->
+   <!-- <button type="button" id="button23" onclick="_invokeAppUploadRecordInfo()">选择app前台使用时间信息</button> -->
+   <button type="button" id="button13" onclick="_invokeTackPhoto()">拍照</button>
+   <button type="button" id="button14" onclick="_forwardOutside({
+      value: 'www.baidu.com'
+   })">打开带头部导航的webview</button>
+   <button type="button" id="button15" onclick="_invokeAppServiceTime({
+      value: new Date().getTime() + ''
+   })">服务器时间</button>
+   <button type="button" id="button16" onclick="_invokeAppsFlyer({
+      eventName: '自定义埋点名称',
+      data: '自定义参数'
+   })">埋点</button>
+   <button type="button" id="button16" onclick="_invokeOpenBrowser({
+      value: 'www.baidu.com'
+   })">打开默认浏览器</button>
+</body>
+
+</html>
