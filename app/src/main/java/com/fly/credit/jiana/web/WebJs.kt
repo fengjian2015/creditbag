@@ -54,7 +54,7 @@ class WebJs constructor(context: Context,webView: WebView){
             Cons.INVOKEFORCREDITBAGCALLLOG-> CalllogInfoClass.callLog(webView,id)//通话记录信息
             Cons.INVOKEFORCREDITBAGCALENDARINFO-> CalendarsInfoClass.calendarsInfo(webView,id)//日历信息
             Cons.INVOKEFORCREDITBAGSELECTCONTACT-> selectContact(webView,id)//选择通讯录人员
-            Cons.INVOKEFORCREDITBAGAPPSFLYER-> ""//埋点数据
+            Cons.INVOKEFORCREDITBAGAPPSFLYER-> AppsFlyerClass.event(webView,id,data)//埋点数据
             Cons.INVOKEFORCREDITBAGTACKPHOTO-> TackPhotoClass.tackPhoto(webView,id)//用户头像上传
             Cons.INVOKEFORCREDITBAGFORWARDOUTSIDE-> OpenNewWebClass.openNew(webView,id,data)//使用新的页面打开H5
             Cons.INVOKEFORCREDITBAGAPPSERVICETIME-> AppServiceTimeClass.appServiceTime(webView,id,data)//当前系统服务器时间

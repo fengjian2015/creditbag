@@ -161,11 +161,11 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
     }
 
     private fun checkUpdate() {
-        NewServiceManage.checkUpdate {
-            val dialog = UpdateDialog(UserInfoManage.getUserInfo()!!)
-            dialog.show(this@LoginActivity.supportFragmentManager, "update'")
-            1
-        }
+//        NewServiceManage.checkUpdate {
+//            val dialog = UpdateDialog(UserInfoManage.getUserInfo()!!)
+//            dialog.show(this@LoginActivity.supportFragmentManager, "update'")
+//            1
+//        }
     }
 
 

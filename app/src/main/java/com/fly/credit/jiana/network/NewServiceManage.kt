@@ -3,8 +3,10 @@ package com.fly.credit.jiana.network
 import android.os.Build
 import android.util.Base64
 import android.webkit.WebView
+import com.facebook.FacebookSdk
 import com.fly.credit.jiana.MyApplication
 import com.fly.credit.jiana.bean.*
+import com.fly.credit.jiana.js.LogoutClass
 import com.fly.credit.jiana.manage.UserInfoManage
 import com.fly.credit.jiana.util.Cons.INSTALL_REFERRER_RESPONSE_JSON
 import com.fly.credit.jiana.util.Cons.KEY_PROTOCAL_1
@@ -106,6 +108,7 @@ object NewServiceManage {
             .compose(NetUtil.applySchedulers())
             .subscribe(object : NetCallback<LoginlInfoListBase?>() {
                 override fun businessFail(netErrorModel: NetErrorModel) {
+                    LogoutClass.logout()
                 }
 
                 override fun businessSuccess(data: LoginlInfoListBase?) {
@@ -124,8 +127,6 @@ object NewServiceManage {
                                 function.invoke(3)
                             }
                         }
-                    }else{
-
                     }
                 }
             })

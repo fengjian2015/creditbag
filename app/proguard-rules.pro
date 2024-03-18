@@ -197,3 +197,8 @@ public static java.lang.String TABLENAME;
 -keep class org.jetbrains.** { *; }
 -keep interface org.jetbrains.** { *; }
 -dontwarn org.jetbrains.*
+
+
+-keep class com.appsflyer.** { *; }
+
+-keep public class com.android.installreferrer.** { *; }

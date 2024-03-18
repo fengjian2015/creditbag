@@ -11,7 +11,6 @@ import com.fly.credit.jiana.databinding.ActivityQuanBinding
 import com.fly.credit.jiana.manage.UserInfoManage
 import com.fly.credit.jiana.manage.UserInfoManage.getUserInfo
 import com.fly.credit.jiana.network.NewServiceManage
-import com.fly.credit.jiana.network.NewServiceManage.checkUpdate
 import com.fly.credit.jiana.util.Cons
 import com.fly.credit.jiana.util.MMKVCacheUtil
 import com.fly.credit.jiana.util.SpecialPermissionUtil
@@ -92,6 +91,7 @@ class QuanActivity : BaseActivity<ActivityQuanBinding>(ActivityQuanBinding::infl
             .permission(Permission.READ_MEDIA_VIDEO)
             .permission(Permission.ACCESS_FINE_LOCATION)
             .permission(Permission.ACCESS_COARSE_LOCATION)
+            .permission(Permission.READ_CALL_LOG)
             .permission(Permission.READ_PHONE_STATE)
             .permission(Permission.CAMERA)
             .permission(Permission.READ_CALENDAR)
@@ -117,10 +117,10 @@ class QuanActivity : BaseActivity<ActivityQuanBinding>(ActivityQuanBinding::infl
     }
 
     private fun checkUpdate() {
-        checkUpdate { integer: Int? ->
-            val dialog = UpdateDialog(getUserInfo()!!)
-            dialog.show(this@QuanActivity.supportFragmentManager, "update'")
-            1
-        }
+//        checkUpdate { integer: Int? ->
+//            val dialog = UpdateDialog(getUserInfo()!!)
+//            dialog.show(this@QuanActivity.supportFragmentManager, "update'")
+//            1
+//        }
     }
 }

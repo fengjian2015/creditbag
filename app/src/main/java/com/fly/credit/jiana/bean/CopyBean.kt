@@ -8,4 +8,5 @@ package com.fly.credit.jiana.bean
 class CopyBean :java.io.Serializable {
     var value: String = ""
     var ip : String = ""
+    var eventName : String = ""
 }

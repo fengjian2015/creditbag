@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">Creditbag</string>
+
+    <string name="facebook_app_id">426767846551734</string>
+    <string name="facebook_client_token">e744010b29217ce88c6be99cb768e4ad</string>
+
     <string name="webview_ssl_hint">SSL certificate validation failed</string>
     <string name="webview_ssl_go">Go on</string>
     <string name="webview_ssl_cancel">Cancel</string>

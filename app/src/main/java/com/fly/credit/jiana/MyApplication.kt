@@ -1,6 +1,7 @@
 package com.fly.credit.jiana
 
 import android.app.Application
+import com.facebook.FacebookSdk
 import com.fly.credit.jiana.util.ActivityManager
 import com.fly.credit.jiana.util.DateTool
 import com.fly.credit.jiana.util.LogUtil
@@ -27,11 +28,20 @@ class MyApplication : Application(){
         super.onCreate()
         application = this
         MMKV.initialize(this)
+        facebookEventInit()
         appStartTime = DateTool.getServerTimestamp()
         ActivityManager.registerActivityLifecycleCallbacks()
         LogUtil.setLogEnable(BuildConfig.DEBUG)
         InstallReferrerManager.init(application)
         ToastUtil.getInstance().setContent(application)
+    }
+
+    fun facebookEventInit(){
+        FacebookSdk.setAutoLogAppEventsEnabled(true);
+        FacebookSdk.setAdvertiserIDCollectionEnabled(true);
+        FacebookSdk.setAutoInitEnabled(true)
+        FacebookSdk.fullyInitialize()
+
     }
 }
 

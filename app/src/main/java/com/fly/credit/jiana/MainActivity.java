@@ -79,11 +79,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkUpdate(){
+        if (!isHome)return;
         NewServiceManage.INSTANCE.checkUpdate(new Function1<Integer, Integer>() {
             @Override
             public Integer invoke(Integer integer) {
-                UpdateDialog dialog =new UpdateDialog(UserInfoManage.INSTANCE.getUserInfo());
-                dialog.show(MainActivity.this.getSupportFragmentManager(), "update'");
+//                UpdateDialog dialog =new UpdateDialog(UserInfoManage.INSTANCE.getUserInfo());
+//                dialog.show(MainActivity.this.getSupportFragmentManager(), "update'");
                 return 1;
             }
         });
@@ -154,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
             checkFinish();
         });
 //        测试
-        webUrl = "file:///android_asset/jsbride-demo.html";
+//        webUrl = "file:///android_asset/jsbride-demo.html";
         if (webUrl!=null && !webUrl.startsWith("http") && !webUrl.startsWith("file")){
             webUrl = "https://"+webUrl;
         }
