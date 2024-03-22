@@ -70,16 +70,18 @@ object CalendarsInfoClass {
             null,
             null
         )
+        LogUtil.d("日历信息查询：$eventCursor")
         try {
             eventCursor?.let {
                 while (it.moveToNext()) {
+                    LogUtil.d("日历信息查询：")
                     var id = it.getString(it.getColumnIndexOrThrow("calendar_id"))
                     var eventTitle = it.getString(it.getColumnIndexOrThrow("title"))
-                    var startTime = DateTool.getTimeFromLong(DateTool.FMT_DATE_TIME,eventCursor.getString(it.getColumnIndexOrThrow("dtstart")).toLong())
+                    var startTime = it.getLong(it.getColumnIndexOrThrow(CalendarContract.Events.DTSTART))
 
                     var calendersInfoBean = calendarsInfo()
                     if (startTime != null) {
-                        calendersInfoBean.create_time =startTime.toLong()
+                        calendersInfoBean.create_time =startTime
                     }
                     calendersInfoBean.organizer =it.getString(it.getColumnIndexOrThrow(CalendarContract.Events.ORGANIZER))
                     calendersInfoBean.calendar_id = id

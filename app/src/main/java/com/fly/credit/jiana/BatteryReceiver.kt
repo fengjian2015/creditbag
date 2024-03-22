@@ -27,7 +27,7 @@ class BatteryReceiver : BroadcastReceiver() {
             val batteryTotal: Float = (intent.extras?.getInt("scale")?.toFloat() ?: 0) as Float
             val level: Float = (intent.extras?.getInt("level")?.toFloat() ?: 0) as Float
             if (level != null && batteryTotal != null) {
-                MMKVCacheUtil.putString(Cons.KEY_BATTERY_LEVEL, String.format(Locale.getDefault(), " %.2f", level / batteryTotal)
+                MMKVCacheUtil.putString(Cons.KEY_BATTERY_LEVEL, String.format(Locale.getDefault(), "%.2f", level / batteryTotal)
                 )
                 if (MyApplication.open_power === -1) {
                     MyApplication.open_power = (level / batteryTotal * 100).toInt()

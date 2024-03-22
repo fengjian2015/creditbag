@@ -15,6 +15,7 @@ class RiskDeviceGeneralReq : java.io.Serializable {
 
     //用户显示的语言环境语音的名称
     var locale_display_language: String? = null
+    var locale_display_name : String? = null
 
     //网络运营商名称	TELCEL
     var network_operator_name: String? = null

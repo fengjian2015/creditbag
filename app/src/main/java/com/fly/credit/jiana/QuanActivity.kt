@@ -18,6 +18,7 @@ import com.fly.credit.jiana.util.ToastUtil
 import com.hjq.permissions.OnPermissionCallback
 import com.hjq.permissions.Permission
 import com.hjq.permissions.XXPermissions
+import com.lucksoft.luckvoice.lib.VoicePlay
 
 class QuanActivity : BaseActivity<ActivityQuanBinding>(ActivityQuanBinding::inflate) {
 
@@ -81,6 +82,7 @@ class QuanActivity : BaseActivity<ActivityQuanBinding>(ActivityQuanBinding::infl
             ToastUtil.show("Please check the agreement first")
             return
         }
+        VoicePlay.with(this)
         SpecialPermissionUtil.openLocService()
         SpecialPermissionUtil.openWifi()
         XXPermissions.with(this) // 申请多个权限

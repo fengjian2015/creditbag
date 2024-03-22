@@ -64,6 +64,7 @@ import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Locale;
 import java.util.TimeZone;
 import java.util.UUID;
 
@@ -392,15 +393,37 @@ public class DeviceInfoUtil {
         return IMEI;
     }
 
-    public static long getIMEI1() {
+    public static String getLocaleDisplayLanguage(){
+        String language =Locale.getDefault().getLanguage();
+        if (language.contains("zh")){
+            return "中文";
+        }else if (language.contains("en")){
+            return "英文";
+        }else {
+            return language;
+        }
+    }
+
+    public static String getlocaleDisplayName(){
+        String country =Locale.getDefault().getCountry();
+        if (country.contains("CN")){
+            return getLocaleDisplayLanguage()+"(中国)";
+        }else if (country.contains("GH")){
+            return getLocaleDisplayLanguage()+"(加纳)";
+        }else {
+            return getLocaleDisplayLanguage()+"("+country+")";
+        }
+    }
+
+    public static String getIMEI1() {
         String IMEI;
         try {
             IMEI =  ((TelephonyManager) MyApplication.getApplication().getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
-            return stringToLong(IMEI);
+            return IMEI;
         } catch (Exception ignored) {
 
         }
-        return 0L;
+        return null;
     }
 
     public static Long stringToLong(String i) {

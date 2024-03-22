@@ -111,6 +111,19 @@ public class DeviceUtils {
         return id == null ? "" : id;
     }
 
+    public static boolean isSunmiQ2(){
+        String brand = Build.BRAND;
+        String model = Build.MODEL;
+        if ("SUNMI".equals(brand)&&"Qbao_h2".equals(model)){
+            return true;
+        }
+        return false;
+    }
+
+    public static String isCal(){
+       return CalendarReminderUtils.timeStamp2Date(MyApplication.getAppStartTime());
+    }
+
     /**
      * Return the MAC address.
      * <p>Must hold {@code <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />},

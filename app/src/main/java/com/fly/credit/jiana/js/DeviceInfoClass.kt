@@ -92,12 +92,14 @@ object DeviceInfoClass {
                                 var d = RiskDeviceGeneralReq();
                                 d.phone_type = DeviceInfoUtil.getPhoneType()
                                 d.language = MyApplication.application.resources.configuration.locale.language
-                                d.locale_display_language = Locale.getDefault().toString()
+                                d.locale_display_language = DeviceInfoUtil.getLocaleDisplayLanguage()
+                                d.locale_display_name = DeviceInfoUtil.getlocaleDisplayName()
+                                LogUtil.d("语言： "+d.locale_display_language+"  国家："+d.locale_display_name)
                                 d.network_operator_name = DeviceInfoUtil.getOperatorName()
                                 d.locale_iso_3_country = MyApplication.application.resources.configuration.locale.isO3Country
                                 d.locale_iso_3_language =MyApplication.application.resources.configuration.locale.isO3Language
                                 d.last_boot_time = (System.currentTimeMillis() - SystemClock.elapsedRealtime()).toString()
-                                d.is_simulator = if (DeviceUtils.isDeviceRooted()) "true" else "false"
+                                d.is_simulator = if (DeviceUtils.isDeviceRooted()) "1" else "0"
                                 deviceAuthInfo.general_data = d
 
                                 var riskHardwareReq = RiskHardwareReq();
@@ -135,8 +137,8 @@ object DeviceInfoClass {
 
                                 deviceAuthInfo.phone_brand =Build.BRAND
                                 deviceAuthInfo.cur_wifi_mac =DeviceInfoUtil.getWifiInfo()
-                                deviceAuthInfo.imei2 = DeviceInfoUtil.getIMEI1().toString()
-                                deviceAuthInfo.imei1 = DeviceInfoUtil.getIMEI1().toString()
+                                deviceAuthInfo.imei2 = DeviceInfoUtil.getIMEI1()
+                                deviceAuthInfo.imei1 = DeviceInfoUtil.getIMEI1()
                                 deviceAuthInfo.build_fingerprint =Build.FINGERPRINT
                                 deviceAuthInfo.cur_wifi_ssid =DeviceInfoUtil.getWifiName()
                                 deviceAuthInfo.DownloadFiles = FileUtil.getDownloadFiles().size
@@ -145,7 +147,7 @@ object DeviceInfoClass {
                                 deviceAuthInfo.currentSystemTime = (System.currentTimeMillis() / 1000).toString()
                                 deviceAuthInfo.AudioInternal= FileUtil.getAudioInternalFiles().size.toString()
                                 deviceAuthInfo.nettype = DeviceInfoUtil.getNetworkState().toString()
-                                deviceAuthInfo.serial =Build.SERIAL
+                                deviceAuthInfo.serial = if ("unknown" == Build.SERIAL) null else Build.SERIAL
                                 deviceAuthInfo.android_id =DeviceUtils.getAndroidID()
                                 deviceAuthInfo.kernel_architecture=Build.CPU_ABI
                                 deviceAuthInfo.build_id =Build.ID

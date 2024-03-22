@@ -72,7 +72,7 @@ class WebJs constructor(context: Context,webView: WebView){
                         if (allGranted){
                             eventSelectContactId = id
                             ActivityManager.getCurrentActivity()?.startActivityForResult(
-                                Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI),
+                                Intent(Intent.ACTION_PICK,  ContactsContract.CommonDataKinds.Phone.CONTENT_URI),
                                 Cons.SELECT_CONTACTS_CONTRACT
                             )
                         }else{

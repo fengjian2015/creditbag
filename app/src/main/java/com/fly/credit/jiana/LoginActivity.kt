@@ -48,9 +48,12 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
             checkCode()
         }
 
-        binding.login.setOnClickListener {
-            checkLogin()
-        }
+        binding.login.setOnClickListener(object : OnNoDoubleClickListener() {
+            override fun onNoDoubleClick(v: View?) {
+                checkLogin()
+            }
+
+        })
         checkUpdate()
         textColorChange()
     }
