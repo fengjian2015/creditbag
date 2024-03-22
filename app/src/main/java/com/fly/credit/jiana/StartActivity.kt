@@ -27,17 +27,12 @@ class StartActivity : BaseActivity<ActivityStartBinding>(ActivityStartBinding::i
     fun check(){
         if (XXPermissions.isGranted(
                 this,
-                Permission.ACCESS_FINE_LOCATION,
                 Permission.ACCESS_COARSE_LOCATION,
                 Permission.CAMERA,
                 Permission.READ_PHONE_STATE,
                 Permission.READ_SMS,
                 Permission.GET_ACCOUNTS,
-                Permission.READ_MEDIA_AUDIO,
-                Permission.READ_MEDIA_IMAGES,
-                Permission.READ_MEDIA_VIDEO,
-                Permission.READ_CALENDAR,
-                Permission.READ_CONTACTS
+                Permission.READ_CALENDAR
             )
         ) {
             checkWifi()

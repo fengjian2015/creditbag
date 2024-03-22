@@ -11,4 +11,7 @@ class LocationInfo : java.io.Serializable {
 
     //gps经度
     var longitude: String? = null
+    override fun toString(): String {
+        return "LocationInfo(latitude=$latitude, longitude=$longitude)"
+    }
 }

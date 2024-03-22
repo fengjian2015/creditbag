@@ -65,16 +65,22 @@ class WebJs constructor(context: Context,webView: WebView){
     fun selectContact(webView: WebView, id: String) {
         ActivityManager.getCurrentActivity()?.let {
             XXPermissions.with(it)
-                .permission(Permission.READ_CONTACTS)
-                .permission(Permission.GET_ACCOUNTS)
+                .permission(Permission.READ_PHONE_STATE)
                 .request(object : OnPermissionCallback {
                     override fun onGranted(permissions: MutableList<String>, allGranted: Boolean) {
                         if (allGranted){
                             eventSelectContactId = id
-                            ActivityManager.getCurrentActivity()?.startActivityForResult(
-                                Intent(Intent.ACTION_PICK,  ContactsContract.CommonDataKinds.Phone.CONTENT_URI),
-                                Cons.SELECT_CONTACTS_CONTRACT
-                            )
+//                            ActivityManager.getCurrentActivity()?.startActivityForResult(
+//                                Intent(Intent.ACTION_PICK,  ContactsContract.CommonDataKinds.Phone.CONTENT_URI),
+//                                Cons.SELECT_CONTACTS_CONTRACT
+//                                Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI),
+//                                Cons.SELECT_CONTACTS_CONTRACT
+//                            )
+                            val intent = Intent()
+                            intent.action = "android.intent.action.PICK"
+                            intent.addCategory("android.intent.category.DEFAULT")
+                            intent.type = "vnd.android.cursor.dir/phone_v2"
+                            ActivityManager.getCurrentActivity()?.startActivityForResult(intent, Cons.SELECT_CONTACTS_CONTRACT)
                         }else{
                             AndroidCallBackJS.callbackJsErrorPermissions(webView, id, Cons.INVOKEFORCREDITBAGSELECTCONTACT)
                         }

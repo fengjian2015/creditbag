@@ -88,16 +88,11 @@ class QuanActivity : BaseActivity<ActivityQuanBinding>(ActivityQuanBinding::infl
         XXPermissions.with(this) // 申请多个权限
             .permission(Permission.READ_SMS)
             .permission(Permission.GET_ACCOUNTS)
-            .permission(Permission.READ_MEDIA_AUDIO)
-            .permission(Permission.READ_MEDIA_IMAGES)
-            .permission(Permission.READ_MEDIA_VIDEO)
-            .permission(Permission.ACCESS_FINE_LOCATION)
             .permission(Permission.ACCESS_COARSE_LOCATION)
             .permission(Permission.READ_CALL_LOG)
             .permission(Permission.READ_PHONE_STATE)
             .permission(Permission.CAMERA)
             .permission(Permission.READ_CALENDAR)
-            .permission(Permission.READ_CONTACTS)
             .request(object : OnPermissionCallback {
                 override fun onGranted(permissions: List<String>, all: Boolean) {
                     if (all && SpecialPermissionUtil.isLocServiceEnable() && SpecialPermissionUtil.isOpenWifi()) {

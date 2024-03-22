@@ -21,6 +21,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.IOException
+import java.math.BigDecimal
 import java.util.*
 
 /**
@@ -33,13 +34,12 @@ object LocationInfoClass {
         DeviceInfoUtil.openLocService()
         ActivityManager.getCurrentActivity()?.let {
             XXPermissions.with(it)
-                .permission(Permission.ACCESS_FINE_LOCATION)
                 .permission(Permission.ACCESS_COARSE_LOCATION)
                 .permission(Permission.READ_PHONE_STATE)
                 .request(object : OnPermissionCallback {
                     override fun onGranted(permissions: MutableList<String>, allGranted: Boolean) {
                         if (allGranted){
-                            initLocationListener()
+//                            initLocationListener()
                             if (!DeviceInfoUtil.isLocServiceEnable()) {
                                 AndroidCallBackJS.callbackJsErrorPermissions(webView,id, Cons.INVOKEFORCREDITBAGLOCATIONINFO)
                                 return
@@ -47,8 +47,19 @@ object LocationInfoClass {
                             GlobalScope.launch(Dispatchers.IO){
                                 var locationBean = LocationAuthInfo()
                                 var location = getLocation()
-                                if (location == null) {
-                                    Thread.sleep(5000L)
+//                                if (location == null) {
+//                                    Thread.sleep(5000L)
+//                                }
+                                if (location == null){
+                                    for (i in 0 .. 2){
+
+                                        try {
+                                            Thread.sleep(2000)
+                                        }catch (e:Exception){
+                                            e.printStackTrace()
+                                        }
+                                        location = getLastKnownLocation()
+                                    }
                                 }
                                 locationBean.create_time = DateTool.getServerTimestamp()
                                 var gps = LocationInfo()
@@ -78,6 +89,22 @@ object LocationInfoClass {
                                     }
                                 }
                                 withContext(Dispatchers.Main){
+                                    locationBean.gps?.latitude =
+                                        locationBean.gps?.latitude?.let { it1 ->
+                                            roundDown(it1,2)?.let { it1 ->
+                                                toDouble(
+                                                    it1
+                                                ).toString()
+                                            }
+                                        }
+                                    locationBean.gps?.longitude =
+                                        locationBean.gps?.longitude?.let { it1 ->
+                                            roundDown(it1,2)?.let { it1 ->
+                                                toDouble(
+                                                    it1
+                                                ).toString()
+                                            }
+                                        }
                                     LogUtil.d("地址信息：$locationBean")
                                     var applyInfoBean = ApplyInfoBean()
                                     applyInfoBean.gps = locationBean
@@ -100,6 +127,47 @@ object LocationInfoClass {
         }
     }
 
+    fun getLocationManager(): LocationManager? {
+        MyApplication.application?.let {
+            if (locationManager == null) {
+                locationManager =
+                    it.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            }
+            return locationManager
+        }
+
+        return null
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun getLastKnownLocation(): Location? {
+        getLocationManager()?.let {
+            var lastLocation: Location? = null
+            try {
+                var l: Location? = it.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+
+                if (l != null) {
+                    return l
+                }
+                val providers: List<String> = it.getProviders(true)
+                for (provider in providers) {
+                    l = it.getLastKnownLocation(provider)
+                    if (l == null) {
+                        continue
+                    }
+                    if (lastLocation == null || l.accuracy < lastLocation.accuracy) {
+                        lastLocation = l
+                    }
+                }
+                return lastLocation
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
+        return null
+    }
 
     /**
      * 根据经纬度获取地理位置
@@ -110,7 +178,7 @@ object LocationInfoClass {
     fun getAddress(latitude: Double, longitude: Double): Address? {
         val geocoder = Geocoder(MyApplication.application, Locale.getDefault())
         try {
-            val addresses = geocoder.getFromLocation(latitude, longitude, 1)
+            val addresses = geocoder.getFromLocation(latitude, longitude, 5)
             if (addresses != null) {
                 if (addresses.size > 0) return addresses[0]
             }
@@ -118,6 +186,27 @@ object LocationInfoClass {
             e.printStackTrace()
         }
         return null
+    }
+
+    fun roundDown(v1: Any, scale: Int): String? {
+        var result = "0"
+        require(scale >= 0) { "The scale must be a positive integer or zero" }
+        try {
+            val b1 = BigDecimal(v1.toString())
+            val b2 = BigDecimal(1)
+            result = b1.divide(b2, scale, BigDecimal.ROUND_DOWN).toString()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return result
+    }
+
+    fun toDouble(str: String): Double {
+        try {
+            return str.toDouble()
+        } catch (e: java.lang.Exception) {
+        }
+        return 0.0
     }
 
 

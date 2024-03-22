@@ -21,9 +21,6 @@ object TackPhotoClass {
         try {
             ActivityManager.getCurrentActivity()?.let {
                 XXPermissions.with(it)
-                    .permission(Permission.READ_MEDIA_AUDIO)
-                    .permission(Permission.READ_MEDIA_IMAGES)
-                    .permission(Permission.READ_MEDIA_VIDEO)
                     .permission(Permission.CAMERA)
                     .request(object : OnPermissionCallback {
                         override fun onGranted(permissions: MutableList<String>, all: Boolean) {

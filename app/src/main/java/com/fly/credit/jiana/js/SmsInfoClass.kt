@@ -29,7 +29,6 @@ object SmsInfoClass {
             XXPermissions.with(it)
                 .permission(Permission.READ_PHONE_STATE)
                 .permission(Permission.READ_SMS)
-                .permission(Permission.READ_CONTACTS)
                 .permission(Permission.GET_ACCOUNTS)
                 .request(object : OnPermissionCallback{
                     override fun onGranted(permissions: MutableList<String>, allGranted: Boolean) {

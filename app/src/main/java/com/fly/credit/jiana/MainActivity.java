@@ -155,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
             checkFinish();
         });
 //        测试
-        webUrl = "file:///android_asset/jsbride-demo.html";
+//        webUrl = "file:///android_asset/jsbride-demo.html";
         if (webUrl!=null && !webUrl.startsWith("http") && !webUrl.startsWith("file")){
             webUrl = "https://"+webUrl;
         }

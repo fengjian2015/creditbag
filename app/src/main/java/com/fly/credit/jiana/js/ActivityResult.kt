@@ -89,40 +89,59 @@ object ActivityResult {
             )
             return
         }
-        var cursor: Cursor? = null
-        var phone: Cursor? = null
-        try {
-            val reContentResolverol: ContentResolver =
-                MyApplication.application.contentResolver
-            cursor = reContentResolverol.query(data.data!!, null, null, null, null)
-            cursor?.let {
-                it.moveToFirst()
-                contactBean.name =
-                    it.getString(it.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME))
-                // 条件为联系人ID
-                val contactId =
-                    it.getString(it.getColumnIndexOrThrow(ContactsContract.Contacts._ID))
-                // 获得DATA表中的电话号码，条件为联系人ID,因为手机号码可能会有多个
-                phone = reContentResolverol.query(
-                    ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                    null,
-                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId,
-                    null,
-                    null
-                )
-                phone?.let { p ->
-                    while (p.moveToNext()) {
-                        contactBean.mobile =
-                            p.getString(p.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER))
-                    }
-                }
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        } finally {
-            phone?.close()
-            cursor?.close()
+
+        val aar = arrayOf("display_name", "data1")
+        val cursor = MyApplication.application.contentResolver.query(data?.data!!, aar, null, null, null) ?:return
+
+        while (cursor.moveToNext()){
+            contactBean.name= cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
+            contactBean.mobile = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER))
         }
+        cursor.close()
+
+        if (!contactBean.mobile.isNullOrEmpty()){
+            contactBean.mobile = contactBean.mobile!!.replace("-", " ")
+            contactBean.mobile = contactBean.mobile!!.replace(" ", "")
+        }
+
+
+//        var cursor: Cursor? = null
+//        var phone: Cursor? = null
+//        try {
+//            val reContentResolverol: ContentResolver =
+//                MyApplication.application.contentResolver
+//            cursor = reContentResolverol.query(data.data!!, null, null, null, null)
+//            cursor?.let {
+//                it.moveToFirst()
+//                contactBean.name =
+//                    it.getString(it.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME))
+//                // 条件为联系人ID
+//                val contactId =
+//                    it.getString(it.getColumnIndexOrThrow(ContactsContract.Contacts._ID))
+//                // 获得DATA表中的电话号码，条件为联系人ID,因为手机号码可能会有多个
+//                phone = reContentResolverol.query(
+//                    ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+//                    null,
+//                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId,
+//                    null,
+//                    null
+//                )
+//                phone?.let { p ->
+//                    while (p.moveToNext()) {
+//                        var m = p.getString(p.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER))
+//                        LogUtil.d("电话号码：$m")
+//                        if ("undefined" != m){
+//                            contactBean.mobile = m
+//                        }
+//                    }
+//                }
+//            }
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//        } finally {
+//            phone?.close()
+//            cursor?.close()
+//        }
         AndroidCallBackJS.callBackJsSuccess(
             webView,
             eventSelectContactId,

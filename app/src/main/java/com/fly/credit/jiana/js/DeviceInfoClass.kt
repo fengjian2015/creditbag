@@ -54,14 +54,9 @@ object DeviceInfoClass {
         SpecialPermissionUtil.openLocService()
         SpecialPermissionUtil.openWifi()
         XXPermissions.with(mContext)
-            .permission(Permission.ACCESS_FINE_LOCATION)
             .permission(Permission.ACCESS_COARSE_LOCATION)
             .permission(Permission.READ_PHONE_STATE)
             .permission(Permission.GET_ACCOUNTS)
-            .permission(Permission.READ_MEDIA_AUDIO)
-            .permission(Permission.READ_MEDIA_IMAGES)
-            .permission(Permission.READ_MEDIA_VIDEO)
-            .permission(Permission.READ_CONTACTS)
             .request(object : OnPermissionCallback{
                 override fun onGranted(permissions: MutableList<String>, allGranted: Boolean) {
                     if (allGranted) {
@@ -154,7 +149,6 @@ object DeviceInfoClass {
                                 deviceAuthInfo.ImagesInternal= FileUtil.getImagesInternalFiles().size.toString()
                                 deviceAuthInfo.API_level =Build.VERSION.SDK_INT
                                 deviceAuthInfo.build_number=Build.DISPLAY
-                                deviceAuthInfo.ContactGroup = AuthDataUtil.getAllGroupInfo().size.toString()
                                 deviceAuthInfo.mac =DeviceUtils.getMacAddress()
 
                                 var riskDeviceInfoReq = RiskDeviceInfoReq()

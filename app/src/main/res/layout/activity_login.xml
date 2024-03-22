@@ -102,6 +102,7 @@
             android:textColorHint="#747E92"
             android:textColor="#666666"
             android:textSize="14sp"
+            android:maxLength="4"
             android:paddingRight="20dp"
             android:inputType="number"
             android:singleLine="true"

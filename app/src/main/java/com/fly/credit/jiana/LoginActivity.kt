@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Handler
 import android.os.Message
+import android.text.InputFilter
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.TextPaint
@@ -40,6 +41,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
     }
 
     override fun initView() {
+        binding.edMobiletv.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(10))
         binding.sendBt.setOnClickListener {
             checkCode()
         }
