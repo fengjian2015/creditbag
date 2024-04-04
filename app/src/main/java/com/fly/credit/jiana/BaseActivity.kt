@@ -37,9 +37,6 @@ abstract class BaseActivity<VB : ViewBinding>(
         }
     }
 
-    override fun finish() {
-        super.finish()
-    }
 
     open fun startActivity(clz: Class<*>?) {
         startActivity(Intent(this@BaseActivity, clz))

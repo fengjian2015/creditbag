@@ -65,7 +65,6 @@ public class NetUpload {
             e.printStackTrace();
         }
         Buffer buffer = source.buffer();
-
         Charset charset = UTF8;
         MediaType contentType = responseBody.contentType();
         if (contentType != null) {

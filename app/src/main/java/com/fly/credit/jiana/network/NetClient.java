@@ -23,21 +23,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NetClient {
 
     private static NetClient netClient;
-    private static NewService newService,authService;
-
+    private static NewService newService;
 
     public static NewService getNewService() {
         if (newService == null){
-            newService = getInstance().initOkHttpClient(false);
+            newService = getInstance().initOkHttpClient();
         }
         return newService;
-    }
-
-    public static NewService getAuthService() {
-        if (authService == null){
-            authService = getInstance().initOkHttpClient(true);
-        }
-        return authService;
     }
 
     public static NetClient getInstance(){
@@ -47,18 +39,19 @@ public class NetClient {
         return netClient;
     }
 
-    public NewService initOkHttpClient(boolean isAuth){
+    public NewService initOkHttpClient(){
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        builder.retryOnConnectionFailure(false);
         builder.connectTimeout(60, TimeUnit.SECONDS);
         builder.readTimeout(60,TimeUnit.SECONDS);
         builder.writeTimeout(60,TimeUnit.SECONDS);
         builder.sslSocketFactory(getSSLSocketFactory());
+        builder.retryOnConnectionFailure(false);
+
         builder.addInterceptor(new ValueInterceptor());
         builder.addInterceptor(new EncryptIntercept());
-        if (isAuth) {
-            builder.addInterceptor(new GzipRequestInterceptor());
-        }
+//        if (isAuth) {
+//            builder.addInterceptor(new GzipRequestInterceptor());
+//        }
         if (BuildConfig.DEBUG) {
             HttpLoggingInterceptor loggingInterceptor =new HttpLoggingInterceptor("NetClientLog");
             loggingInterceptor.setPrintLevel(HttpLoggingInterceptor.Level.BODY);

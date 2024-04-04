@@ -17,15 +17,10 @@ public class NetUtil{
     @NonNull
     public static  <T> ObservableTransformer<T, T> applySchedulers() {
         if(scheduler == null){
-            scheduler =  Schedulers.from(Executors.newFixedThreadPool(10));
+            scheduler =  Schedulers.from(Executors.newFixedThreadPool(5));
         }
-        return new ObservableTransformer() {
-            @Override
-            public ObservableSource apply(Observable upstream) {
-                return upstream.subscribeOn(scheduler)
-                        .unsubscribeOn(scheduler)
-                        .observeOn(AndroidSchedulers.mainThread());
-            }
-        };
+        return (ObservableTransformer) upstream -> upstream.subscribeOn(scheduler)
+                .unsubscribeOn(scheduler)
+                .observeOn(AndroidSchedulers.mainThread());
     }
 }

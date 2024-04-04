@@ -19,7 +19,7 @@ object SelectContactClass {
     fun selectContact(webView: WebView, id: String, eventSelectContactId: String) {
         ActivityManager.getCurrentActivity()?.let {
             XXPermissions.with(it)
-                .permission(Permission.GET_ACCOUNTS)
+//                .permission(Permission.GET_ACCOUNTS)
                 .request(object : OnPermissionCallback {
                     override fun onGranted(permissions: MutableList<String>, allGranted: Boolean) {
                         if (allGranted){

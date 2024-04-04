@@ -33,13 +33,11 @@ object UpImageClass {
                 if (response.isSuccessful) {
                     try {
                         val responseBody: String = NetUpload.getResponseBody(response)
-                        val imageResponse: ImageResponse =
-                            Gson().fromJson(responseBody, ImageResponse::class.java)
+                        val imageResponse: ImageResponse = Gson().fromJson(responseBody, ImageResponse::class.java)
                         val copyBean = CopyBean()
                         copyBean.value = imageResponse.data.toString()
                         AndroidCallBackJS.callBackJsSuccess(webView,id,Cons.INVOKEFORCREDITBAGTACKPHOTO
                             , Gson().toJson(copyBean))
-
                     } catch (e: Exception) {
                         e.printStackTrace()
                         AndroidCallBackJS.callbackJsErrorOther(webView,id, Cons.INVOKEFORCREDITBAGTACKPHOTO, e.toString())

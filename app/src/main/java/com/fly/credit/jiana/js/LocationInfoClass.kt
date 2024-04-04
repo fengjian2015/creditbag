@@ -39,7 +39,7 @@ object LocationInfoClass {
                 .request(object : OnPermissionCallback {
                     override fun onGranted(permissions: MutableList<String>, allGranted: Boolean) {
                         if (allGranted){
-//                            initLocationListener()
+                            initLocationListener()
                             if (!DeviceInfoUtil.isLocServiceEnable()) {
                                 AndroidCallBackJS.callbackJsErrorPermissions(webView,id, Cons.INVOKEFORCREDITBAGLOCATIONINFO)
                                 return

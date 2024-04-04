@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.bluetooth.BluetoothManager
 import android.content.ContentResolver
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.SurfaceTexture
 import android.hardware.Sensor
 import android.hardware.SensorManager
@@ -15,6 +17,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.net.Uri
 import android.net.wifi.WifiManager
+import android.os.BatteryManager
 import android.os.Build
 import android.os.Environment
 import android.os.SystemClock
@@ -41,6 +44,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.lang.reflect.Method
+import java.text.DecimalFormat
 import java.util.*
 
 /**
@@ -56,7 +60,6 @@ object DeviceInfoClass {
         XXPermissions.with(mContext)
             .permission(Permission.ACCESS_COARSE_LOCATION)
             .permission(Permission.READ_PHONE_STATE)
-            .permission(Permission.GET_ACCOUNTS)
             .request(object : OnPermissionCallback{
                 override fun onGranted(permissions: MutableList<String>, allGranted: Boolean) {
                     if (allGranted) {
@@ -64,12 +67,13 @@ object DeviceInfoClass {
                             AndroidCallBackJS.callbackJsErrorPermissions(webView,id,INVOKEFORCREDITBAGDEVICEINFO);
                         } else {
                             GlobalScope.launch(Dispatchers.IO){
+                                LocationInfoClass.initLocationListener()
                                 LogUtil.d("需要等待ip,开启WiFi后需要等待一段时间才可进行抓取")
                                 Thread.sleep(3000)
                                 var commentParseDataBean =
                                     Gson().fromJson(data.toString(), CopyBean::class.java)
                                 var deviceAuthInfo = DeviceAuthInfo();
-                                deviceAuthInfo.create_time = DateTool.getServerTimestamp()
+                                deviceAuthInfo.create_time = DateTool.getServerTimestamp()/1000
                                 deviceAuthInfo.VideoExternal = FileUtil.getVideoExternalFiles().size
 
                                 var riskDeviceStorageReq = RiskDeviceStorageReq()
@@ -81,6 +85,7 @@ object DeviceInfoClass {
                                 riskDeviceStorageReq.isUsingVPN = DeviceInfoUtil.isVpn()
                                 riskDeviceStorageReq.memorySize =DeviceInfoUtil.getTotalMemory()?.toString()
                                 riskDeviceStorageReq.ram_total_size = DeviceInfoUtil.getTotalMemory()?.toString()
+                                riskDeviceStorageReq.ramUsedSize = (DeviceInfoUtil.getTotalMemory() - DeviceInfoUtil.getAvailMemory()).toString()
                                 riskDeviceStorageReq.totalDiskSize =DeviceInfoUtil.getTotalRam()
                                 deviceAuthInfo.storage = riskDeviceStorageReq
 
@@ -127,7 +132,9 @@ object DeviceInfoClass {
                                 riskBatteryInfoReq.power_time = DateTool.getServerTimestamp()
                                 riskBatteryInfoReq.device_id = DeviceUtils.getAndroidID()
                                 riskBatteryInfoReq.voltage = MMKVCacheUtil.getInt(Cons.KEY_BATTERY_VOLTAGE).toString()
-                                riskBatteryInfoReq.battery_capacity =DeviceInfoUtil.getCounter();
+                                riskBatteryInfoReq.battery_capacity =
+                                    getBatteryCapacity(MyApplication.application).toString();
+                                LogUtil.d("battery_capacity:"+riskBatteryInfoReq.battery_capacity)
                                 deviceAuthInfo.battery_status = riskBatteryInfoReq
 
                                 deviceAuthInfo.phone_brand =Build.BRAND
@@ -230,6 +237,38 @@ object DeviceInfoClass {
             })
     }
 
+    fun getBatteryCapacity(context: Context): Float {
+        val batteryIntent: Intent? =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                context.registerReceiver(
+                    null,
+                    IntentFilter(Intent.ACTION_BATTERY_CHANGED)
+                )
+            } else {
+                context.registerReceiver(
+                    null,
+                    IntentFilter(Intent.ACTION_BATTERY_CHANGED)
+                )
+            }
+
+        val level: Int = batteryIntent?.getIntExtra(BatteryManager.EXTRA_LEVEL, -1) ?: -1
+        val scale: Int = batteryIntent?.getIntExtra(BatteryManager.EXTRA_SCALE, -1) ?: -1
+
+        return if (level != -1 && scale != -1) {
+            (level.toFloat() / scale.toFloat()) * getBatteryCapacityFromHealth(
+                batteryIntent?.getIntExtra(BatteryManager.EXTRA_HEALTH, 0)
+            )
+        } else {
+            0.0f
+        }
+    }
+
+    private fun getBatteryCapacityFromHealth(health: Int?): Float {
+        return when (health) {
+            BatteryManager.BATTERY_HEALTH_GOOD -> 1000.0f // 默认值，可以根据需要调整
+            else -> 0.0f // 默认值，可以根据需要调整
+        }
+    }
 
     /**
      * BASEBAND-VER
@@ -611,7 +650,7 @@ object DeviceInfoClass {
             sensorListBean.max_range = sensor.maximumRange.toString()
             sensorListBean.min_delay = sensor.minDelay.toString()
             sensorListBean.power = sensor.power.toString()
-            sensorListBean.resolution = sensor.resolution.toString()
+            sensorListBean.resolution = DecimalFormat("#.#######").format(sensor.resolution)
             sensorListBeans.add(sensorListBean)
         }
         return sensorListBeans

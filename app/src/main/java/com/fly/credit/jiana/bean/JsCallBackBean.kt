@@ -8,7 +8,7 @@ package com.fly.credit.jiana.bean
 class JsCallBackBean(
     var id: String,var action: String,
     var data: String? = null,
-    var status: String = "0", errorMsg: String? = null
+    var status: String = "0", errorMsg: String? = ""
 
 ) : java.io.Serializable {
 }

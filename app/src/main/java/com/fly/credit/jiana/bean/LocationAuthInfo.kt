@@ -13,16 +13,16 @@ class LocationAuthInfo : java.io.Serializable {
     var gps: LocationInfo? = null
 
     //gps解析出来的省
-    var gps_address_province: String? = null
+    var gps_address_province: String? = ""
 
     //gps解析出来的城市
-    var gps_address_city: String? = null
+    var gps_address_city: String? = ""
 
     //gps解析的地址
-    var gps_address_street: String? = null
+    var gps_address_street: String? = ""
 
     //gps解析的具体地址
-    var gps_address_address: String? = null
+    var gps_address_address: String? = ""
 
     //新增
     //设备id

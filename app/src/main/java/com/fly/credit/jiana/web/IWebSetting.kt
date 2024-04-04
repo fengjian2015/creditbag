@@ -14,35 +14,37 @@ object IWebSetting {
         try {
             val webSettings = webView.settings
             webSettings.useWideViewPort = true
+
+            webSettings.allowUniversalAccessFromFileURLs = true
+            webSettings.blockNetworkImage = false
+
+            webSettings.fantasyFontFamily = "fantasy"
             webSettings.loadWithOverviewMode = true
             webSettings.layoutAlgorithm = WebSettings.LayoutAlgorithm.NARROW_COLUMNS
             webSettings.allowContentAccess = true
             webSettings.allowFileAccess = true
             webSettings.allowFileAccessFromFileURLs = true
-            webSettings.allowUniversalAccessFromFileURLs = true
-            webSettings.blockNetworkImage = false
-            webSettings.blockNetworkLoads = false
-            webSettings.builtInZoomControls = false
-            webSettings.cursiveFontFamily = "cursive"
-            webSettings.displayZoomControls = true
-            webSettings.databaseEnabled = true
-            webSettings.savePassword = false
-            webSettings.domStorageEnabled = true
-            webSettings.fantasyFontFamily = "fantasy"
             webSettings.fixedFontFamily = "monospace"
             webSettings.textZoom = 100
             webSettings.javaScriptCanOpenWindowsAutomatically = false
             webSettings.javaScriptEnabled = true
             webSettings.lightTouchEnabled = false
             webSettings.loadWithOverviewMode = true
+            webSettings.displayZoomControls = true
+            webSettings.databaseEnabled = true
+            webSettings.savePassword = false
+            webSettings.domStorageEnabled = true
+            webSettings.blockNetworkLoads = false
+            webSettings.builtInZoomControls = false
+            webSettings.cursiveFontFamily = "cursive"
             webSettings.loadsImagesAutomatically = true
-            webSettings.mediaPlaybackRequiresUserGesture = true
-            webSettings.sansSerifFontFamily = "sans-serif"
-            webSettings.saveFormData = true
             webSettings.savePassword = false
             webSettings.serifFontFamily = "serif"
             webSettings.standardFontFamily = "sans-serif"
             webSettings.setSupportMultipleWindows(false)
+            webSettings.mediaPlaybackRequiresUserGesture = true
+            webSettings.sansSerifFontFamily = "sans-serif"
+            webSettings.saveFormData = true
             webSettings.setSupportZoom(true)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 webSettings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW

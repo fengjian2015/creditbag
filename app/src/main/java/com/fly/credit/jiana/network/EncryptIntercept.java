@@ -42,25 +42,19 @@ public class EncryptIntercept implements Interceptor {
         String requestURI;
         String baseUrl = "";
         String requestDecrypt = "";
-
         try {
             String closeSecret = request.header(CLOSE_SECRET);
-            LogUtil.w( closeSecret);
-
+            LogUtil.d( closeSecret);
             if ("true".equals(closeSecret)){
                 response = chain.proceed(request);
-
             } else {
-
                 String method = request.method();
                 requestURI = request.url().encodedPath();
                 updateRequest = request.newBuilder().headers(request.headers()) ;
-
                 if (METHOD_POST.equals(method)) {
                     baseUrl = Cons.BaseUrl+ requestURI;
                     String param = getRequestInfo(request);
                     if (!TextUtils.isEmpty(param)) {
-                        //body加密
                         requestDecrypt = EncryptCbcUtil.encrypt(param);
                     } else {
                         requestDecrypt = "";
@@ -86,24 +80,39 @@ public class EncryptIntercept implements Interceptor {
                 } else {
                     responseDecrypt = jsonStr;
                 }
-
                 //返回的
                 ResponseBody responseBody = ResponseBody.create(response.body().contentType(), responseDecrypt);
                 response = response.newBuilder().body(responseBody).build();
-
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         if (response == null){
             return chain.proceed(request);
         }
-
         return response;
     }
 
+    private String getResponseInfo(Response response) {
+        String str = "";
+        if (response == null || !response.isSuccessful()) {
+            return str;
+        }
+        ResponseBody responseBody = response.body();
+        long contentLength = responseBody.contentLength();
+        BufferedSource source = responseBody.source();
+        try {
+            source.request(Long.MAX_VALUE); // Buffer the entire body.
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Buffer buffer = source.buffer();
+        Charset charset = Charset.forName("utf-8");
+        if (contentLength != 0) {
+            str = buffer.clone().readString(charset);
+        }
+        return str;
+    }
 
     private String getRequestInfo(Request request) {
         String str = "";
@@ -126,26 +135,7 @@ public class EncryptIntercept implements Interceptor {
     }
 
 
-    private String getResponseInfo(Response response) {
-        String str = "";
-        if (response == null || !response.isSuccessful()) {
-            return str;
-        }
-        ResponseBody responseBody = response.body();
-        long contentLength = responseBody.contentLength();
-        BufferedSource source = responseBody.source();
-        try {
-            source.request(Long.MAX_VALUE); // Buffer the entire body.
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Buffer buffer = source.buffer();
-        Charset charset = Charset.forName("utf-8");
-        if (contentLength != 0) {
-            str = buffer.clone().readString(charset);
-        }
-        return str;
-    }
+
 
 
 

@@ -1,13 +1,10 @@
 package com.fly.credit.jiana;
 
-import static com.fly.credit.jiana.util.Cons.KEY_PUBLIC_IP;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -18,17 +15,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import com.fly.credit.jiana.bean.PublicDataResponse;
-import com.fly.credit.jiana.manage.UserInfoManage;
-import com.fly.credit.jiana.network.EncryptCbcUtil;
-import com.fly.credit.jiana.network.NetCallback;
-import com.fly.credit.jiana.network.NetClient;
-import com.fly.credit.jiana.network.NetErrorModel;
-import com.fly.credit.jiana.network.NetUtil;
 import com.fly.credit.jiana.network.NewServiceManage;
-import com.fly.credit.jiana.util.LogUtil;
-import com.fly.credit.jiana.util.MMKVCacheUtil;
 import com.fly.credit.jiana.util.SignalStrengthUtils;
 import com.fly.credit.jiana.util.SoftKeyboardUtils;
 import com.fly.credit.jiana.web.IWebChromeClient;
@@ -36,11 +23,9 @@ import com.fly.credit.jiana.web.IWebSetting;
 import com.fly.credit.jiana.web.IWebViewClient;
 import com.fly.credit.jiana.web.WebJs;
 import com.gyf.immersionbar.ImmersionBar;
-
 import kotlin.jvm.functions.Function1;
 
 public class MainActivity extends AppCompatActivity {
-    private boolean isHome = false;
     private static final String IS_HOME = "IS_HOME";
     private static final String WEB_URL = "WEB_URL";
     private String webUrl;
@@ -51,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar webLoading;
     private WebView webView;
     private BatteryReceiver batteryReceiver;
+
     public static void openWeb(Activity activity, boolean isHome, String url) {
         Intent intent = new Intent(activity, MainActivity.class);
         intent.putExtra(IS_HOME, isHome);
@@ -62,12 +48,21 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        webUrl = getIntent().getStringExtra(WEB_URL);
-        isHome = getIntent().getBooleanExtra(IS_HOME,false);
-        initView();
+
+
+        topFrame = findViewById(R.id.topFrame);
+        topBack = findViewById(R.id.topBack);
+        topTitle = findViewById(R.id.topTitle);
+        webLoading = findViewById(R.id.webLoading);
+        webView = findViewById(R.id.webView);
         initBar();
         initData();
-        initBattery();
+        if (getIntent().getBooleanExtra(IS_HOME,false)) {
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
+            batteryReceiver = new BatteryReceiver();
+            registerReceiver(batteryReceiver, intentFilter);
+        }
 //        getPublicIp();
         checkUpdate();
         SignalStrengthUtils.INSTANCE.getPhoneSignalStrength(this, new SignalStrengthUtils.SignalStrengthListener() {
@@ -79,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkUpdate(){
-        if (!isHome)return;
+        if (!getIntent().getBooleanExtra(IS_HOME,false))return;
         NewServiceManage.INSTANCE.checkUpdate(new Function1<Integer, Integer>() {
             @Override
             public Integer invoke(Integer integer) {
@@ -92,26 +87,16 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    private void initBattery() {
-        if (isHome) {
-            IntentFilter intentFilter = new IntentFilter();
-            intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
-            batteryReceiver = new BatteryReceiver();
-            registerReceiver(batteryReceiver, intentFilter);
-        }
-    }
-
-
     @Override
     protected void onDestroy() {
-        if (isHome){
+        if (getIntent().getBooleanExtra(IS_HOME,false)){
             unregisterReceiver(batteryReceiver);
         }
         super.onDestroy();
     }
 
     private void initBar() {
-        if (isHome){
+        if (getIntent().getBooleanExtra(IS_HOME,false)){
             ImmersionBar
                     .with(this)
                     .statusBarDarkFont(true)
@@ -128,14 +113,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void initView() {
-        topFrame = findViewById(R.id.topFrame);
-        topBack = findViewById(R.id.topBack);
-        topTitle = findViewById(R.id.topTitle);
-        webLoading = findViewById(R.id.webLoading);
-        webView = findViewById(R.id.webView);
-
-    }
 
     @SuppressLint("JavascriptInterface")
     private void initData() {
@@ -144,8 +121,7 @@ public class MainActivity extends AppCompatActivity {
         IWebSetting.webViewInit(webView);
         webView.setWebViewClient(new IWebViewClient(webLoading, topTitle));
         webView.setWebChromeClient(new IWebChromeClient(webLoading));
-        if (isHome){
-//            UpdateUtil.checkUpdate(this);
+        if (getIntent().getBooleanExtra(IS_HOME,false)){
             topFrame.setVisibility(View.GONE);
         }else {
             topFrame.setVisibility(View.VISIBLE);
@@ -154,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
         topBack.setOnClickListener(view -> {
             checkFinish();
         });
+        webUrl = getIntent().getStringExtra(WEB_URL);
 //        测试
 //        webUrl = "file:///android_asset/jsbride-demo.html";
         if (webUrl!=null && !webUrl.startsWith("http") && !webUrl.startsWith("file")){
@@ -166,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
         if (webView.canGoBack()) {
             webView.goBack();
         } else {
-            if (isHome){
+            if (getIntent().getBooleanExtra(IS_HOME,false)){
                 moveTaskToBack(true);
             }else {
                 finish();

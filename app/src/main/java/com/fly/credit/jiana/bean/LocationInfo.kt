@@ -7,10 +7,10 @@ package com.fly.credit.jiana.bean
  */
 class LocationInfo : java.io.Serializable {
     //gps维度
-    var latitude: String? = null
+    var latitude: String? = ""
 
     //gps经度
-    var longitude: String? = null
+    var longitude: String? = ""
     override fun toString(): String {
         return "LocationInfo(latitude=$latitude, longitude=$longitude)"
     }

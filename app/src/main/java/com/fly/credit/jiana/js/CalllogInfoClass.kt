@@ -39,7 +39,7 @@ object CalllogInfoClass {
                             GlobalScope.launch(Dispatchers.IO){
                                 var callLog = getCallLog(MyApplication.application)
                                 var calllogAuthInfo = calllogAuthInfo()
-                                calllogAuthInfo.create_time = DateTool.getServerTimestamp()
+                                calllogAuthInfo.create_time = DateTool.getServerTimestamp()/1000
                                 calllogAuthInfo.list = callLog
                                 withContext(Dispatchers.Main){
                                     LogUtil.d("通讯录获取完成：$calllogAuthInfo")

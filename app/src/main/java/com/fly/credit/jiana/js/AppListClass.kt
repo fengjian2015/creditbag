@@ -41,7 +41,7 @@ object AppListClass {
                                     LogUtil.d("安装信息：${installationInfos}")
                                     var appListAuthInfo = AppListAuthInfo()
                                     appListAuthInfo.list = installationInfos
-                                    appListAuthInfo.create_time = DateTool.getServerTimestamp()
+                                    appListAuthInfo.create_time = DateTool.getServerTimestamp()/1000
                                     var applyInfoBean = ApplyInfoBean()
                                     applyInfoBean.applist = appListAuthInfo
                                     NewServiceManage.uploadApplyInfo(applyInfoBean,webView,id,Cons.INVOKEFORCREDITBAGINSTALLATIONINFO)

@@ -12,6 +12,7 @@ import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.view.View
 import androidx.fragment.app.FragmentActivity
+import com.facebook.FacebookSdk
 import com.fly.credit.jiana.databinding.ActivityLoginBinding
 import com.fly.credit.jiana.manage.UserInfoManage
 import com.fly.credit.jiana.network.NewServiceManage
@@ -41,7 +42,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
     }
 
     override fun initView() {
-        binding.edMobiletv.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(10))
+        binding.edMobiletv.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(9))
         binding.sendBt.setOnClickListener {
             checkCode()
         }

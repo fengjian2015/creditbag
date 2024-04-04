@@ -8,6 +8,6 @@ package com.fly.credit.jiana.bean
 class RiskDeviceInfoReq : java.io.Serializable {
     //是否root  true false
 
-    var isRooted: String? = null
+    var isRooted: String? = ""
 
 }

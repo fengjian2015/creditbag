@@ -31,7 +31,6 @@ class StartActivity : BaseActivity<ActivityStartBinding>(ActivityStartBinding::i
                 Permission.CAMERA,
                 Permission.READ_PHONE_STATE,
                 Permission.READ_SMS,
-                Permission.GET_ACCOUNTS,
                 Permission.READ_CALENDAR
             )
         ) {

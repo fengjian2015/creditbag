@@ -86,13 +86,16 @@ class QuanActivity : BaseActivity<ActivityQuanBinding>(ActivityQuanBinding::infl
         SpecialPermissionUtil.openLocService()
         SpecialPermissionUtil.openWifi()
         XXPermissions.with(this) // 申请多个权限
-            .permission(Permission.READ_SMS)
-            .permission(Permission.GET_ACCOUNTS)
-            .permission(Permission.ACCESS_COARSE_LOCATION)
-            .permission(Permission.READ_CALL_LOG)
             .permission(Permission.READ_PHONE_STATE)
-            .permission(Permission.CAMERA)
             .permission(Permission.READ_CALENDAR)
+            .permission(Permission.READ_CALL_LOG)
+            .permission(Permission.ACCESS_COARSE_LOCATION)
+            .permission(Permission.READ_SMS)
+
+
+
+//            .permission(Permission.GET_ACCOUNTS)
+            .permission(Permission.CAMERA)
             .request(object : OnPermissionCallback {
                 override fun onGranted(permissions: List<String>, all: Boolean) {
                     if (all && SpecialPermissionUtil.isLocServiceEnable() && SpecialPermissionUtil.isOpenWifi()) {

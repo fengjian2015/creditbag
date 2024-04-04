@@ -6,13 +6,13 @@ package com.fly.credit.jiana.bean
  * Description：
  */
 class UserInfoBean : java.io.Serializable {
-    var homeUrl : String? = null
-    var token : String? = null
-    var name : String? = null
-    var phone : String? = null
+    var homeUrl : String? = ""
+    var token : String? = ""
+    var name : String? = ""
+    var phone : String? = ""
     var isNew : Boolean? = true
-    var mustupdate: String? =null
-    var appInstallUrl : String? = null
+    var mustupdate: String? =""
+    var appInstallUrl : String? = ""
     override fun toString(): String {
         return "UserInfoBean(homeUrl=$homeUrl, token=$token, name=$name, phone=$phone, isNew=$isNew, mustupdate='$mustupdate', appInstallUrl='$appInstallUrl')"
     }

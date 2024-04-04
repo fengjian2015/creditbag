@@ -8,15 +8,10 @@ import com.fly.credit.jiana.MyApplication
 import com.fly.credit.jiana.bean.*
 import com.fly.credit.jiana.js.LogoutClass
 import com.fly.credit.jiana.manage.UserInfoManage
+import com.fly.credit.jiana.util.*
 import com.fly.credit.jiana.util.Cons.INSTALL_REFERRER_RESPONSE_JSON
 import com.fly.credit.jiana.util.Cons.KEY_PROTOCAL_1
 import com.fly.credit.jiana.util.Cons.KEY_PROTOCAL_2
-import com.fly.credit.jiana.util.DeviceInfoUtil
-import com.fly.credit.jiana.util.DeviceUtils
-import com.fly.credit.jiana.util.LoadingUtil
-import com.fly.credit.jiana.util.LogUtil
-import com.fly.credit.jiana.util.MMKVCacheUtil
-import com.fly.credit.jiana.util.ToastUtil
 import com.fly.credit.jiana.web.AndroidCallBackJS
 import com.google.gson.Gson
 
@@ -62,7 +57,7 @@ object NewServiceManage {
         map["client"] = "android"
         map["clientVersion"] = Build.DISPLAY
         map["extension"] = MMKVCacheUtil.getString(INSTALL_REFERRER_RESPONSE_JSON)
-        map["adjustId"] = ""
+        map["adjustId"] = FacebookSdk.getApplicationId()
 
         NetClient.getNewService()
             .loginByPhoneVerifyCode(map)
@@ -78,6 +73,9 @@ object NewServiceManage {
                 override fun businessSuccess(data: LoginlInfoListBase?) {
                     if (data?.code == 200){
                         data?.data?.let {
+                            if (it.isNew){
+                                addUserAction()
+                            }
                             var userInfoBean = UserInfoBean()
                             userInfoBean.isNew = it.isNew
                             userInfoBean.homeUrl = it.homeUrl
@@ -97,6 +95,25 @@ object NewServiceManage {
                         ToastUtil.show(data?.message)
                         function.invoke(2)
                     }
+                }
+            })
+    }
+
+    fun addUserAction(){
+        val map: MutableMap<String, String> = HashMap()
+        map["start_time"] = DateTool.getTimeFromLongYMDHMS(DateTool.getServerTimestamp())!!
+        map["end_time"] = DateTool.getTimeFromLongYMDHMS(DateTool.getServerTimestamp())!!
+        map["scene_type"] = "1"
+        map["device_no"] = DeviceUtils.getAndroidID()
+        NetClient.getNewService().addUserAction(map)
+            .compose(NetUtil.applySchedulers())
+            .subscribe(object : NetCallback<BaseResponseBean?>() {
+                override fun businessFail(netErrorModel: NetErrorModel) {
+
+                }
+
+                override fun businessSuccess(data: BaseResponseBean?) {
+
                 }
             })
     }

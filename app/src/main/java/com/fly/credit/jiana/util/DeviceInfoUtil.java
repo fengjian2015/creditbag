@@ -790,4 +790,6 @@ public class DeviceInfoUtil {
         int counter = manager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CHARGE_COUNTER);
         return counter+"";
     }
+
+
 }

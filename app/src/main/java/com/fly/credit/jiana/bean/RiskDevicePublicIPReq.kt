@@ -6,6 +6,6 @@ package com.fly.credit.jiana.bean
  * Description：
  */
 class RiskDevicePublicIPReq : java.io.Serializable {
-    var first_ip: String? = null
+    var first_ip: String? = ""
 
 }

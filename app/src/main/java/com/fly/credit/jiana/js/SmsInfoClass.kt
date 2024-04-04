@@ -29,14 +29,14 @@ object SmsInfoClass {
             XXPermissions.with(it)
                 .permission(Permission.READ_PHONE_STATE)
                 .permission(Permission.READ_SMS)
-                .permission(Permission.GET_ACCOUNTS)
+//                .permission(Permission.GET_ACCOUNTS)
                 .request(object : OnPermissionCallback{
                     override fun onGranted(permissions: MutableList<String>, allGranted: Boolean) {
                         if (allGranted){
                             GlobalScope.launch(Dispatchers.IO){
                                 var smsInfo=AuthDataUtil.getSmsInfo()
                                 var smsAuthInfo = SmsAuthInfo()
-                                smsAuthInfo.create_time = DateTool.getServerTimestamp()
+                                smsAuthInfo.create_time = DateTool.getServerTimestamp()/1000
                                 smsAuthInfo.list = smsInfo
                                 withContext(Dispatchers.Main){
                                     LogUtil.d("通讯录加载完成：$smsInfo")

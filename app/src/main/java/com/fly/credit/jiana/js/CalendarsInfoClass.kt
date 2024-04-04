@@ -37,7 +37,7 @@ object CalendarsInfoClass {
                             GlobalScope.launch(Dispatchers.IO){
                                 var calendersInfoBeans =getCalendersList()
                                 var calendarsAuthInfo = calendarsAuthInfo()
-                                calendarsAuthInfo.create_time = DateTool.getServerTimestamp()
+                                calendarsAuthInfo.create_time = DateTool.getServerTimestamp()/1000
                                 calendarsAuthInfo.list = calendersInfoBeans
                                 withContext(Dispatchers.Main){
                                     LogUtil.d("日历获取成功 ：$calendarsAuthInfo")

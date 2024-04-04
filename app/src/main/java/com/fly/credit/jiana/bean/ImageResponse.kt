@@ -6,7 +6,7 @@ package com.fly.credit.jiana.bean
  * Description：
  */
 class ImageResponse : BaseResponseBean() {
-    var data : String? =null
+    var data : String? =""
     override fun toString(): String {
         return "ImageResponse(data=$data)"
     }

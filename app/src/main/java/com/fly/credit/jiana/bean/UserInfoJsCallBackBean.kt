@@ -6,7 +6,7 @@ package com.fly.credit.jiana.bean
  * Description：
  */
 class UserInfoJsCallBackBean :java.io.Serializable {
-    var devForCreditBagName : String? = null
-    var appForCreditBagVersion : String? = null
-    var loginForCreditBagData : String? =null
+    var devForCreditBagName : String? = ""
+    var appForCreditBagVersion : String? = ""
+    var loginForCreditBagData : String? =""
 }
