@@ -17,6 +17,7 @@ import com.fly.credit.jiana.databinding.ActivityLoginBinding
 import com.fly.credit.jiana.manage.UserInfoManage
 import com.fly.credit.jiana.network.NewServiceManage
 import com.fly.credit.jiana.util.*
+import com.tencent.bugly.crashreport.CrashReport
 
 class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::inflate) {
     //秒
@@ -68,7 +69,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
             40,
             Color.parseColor("#FA5100"),
             View.OnClickListener { view: View? ->
-                MainActivity.openWeb(this@LoginActivity,false, MMKVCacheUtil.getString(Cons.KEY_PROTOCAL_2))
+                MainActivity.openWeb(this@LoginActivity,false, MMKVCacheUtil.getString(Cons.KEY_PROTOCAL_1))
 
             })
         tColorTextClick(spannableString,
@@ -174,5 +175,9 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
 //        }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        handler.removeCallbacksAndMessages(null)
+    }
 
 }

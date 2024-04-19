@@ -59,7 +59,7 @@ object AndroidCallBackJS {
         GlobalScope.launch(Dispatchers.Main) {
             try {
                 val toJson = Gson().toJson(model)
-                LogUtil.d("js回传：$toJson")
+                LogUtil.d("js调用：$toJson")
                 val js = "javascript: window.JSForCreditBagCallback && window.JSForCreditBagCallback($toJson);"
                 webView.evaluateJavascript(js, callback as ValueCallback<String>?)
             } catch (w: Throwable) {

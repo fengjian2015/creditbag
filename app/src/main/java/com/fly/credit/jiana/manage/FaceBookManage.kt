@@ -1,5 +1,6 @@
 package com.fly.credit.jiana.manage
 
+import com.facebook.LoggingBehavior
 import com.facebook.appevents.AppEventsLogger
 import com.fly.credit.jiana.util.ActivityManager
 

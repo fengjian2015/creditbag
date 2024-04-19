@@ -15,8 +15,8 @@ public class ValueInterceptor implements Interceptor {
         RequestBody requestBody = request.body();
         if (requestBody!=null) {
             request = request.newBuilder()
-                    .header("Authorization", UserInfoManage.INSTANCE.getToken())
                     .header("lang", "en_US")
+                    .header("Authorization", UserInfoManage.INSTANCE.getToken())
                     .build();
         }
         Response response;

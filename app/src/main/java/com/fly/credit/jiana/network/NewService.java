@@ -18,31 +18,31 @@ import retrofit2.http.Part;
 
 public interface NewService {
 
-    @POST("/app/VuC8dp8BUUEOW060Q2xU/83QHC2iJaoxWEAIYmUviVY=")
+    @POST("/app/jzoJXUMnIm2eBFFv3JL2mYB742qCGmqOf66mxu3p2u8=")
     Observable<PublicDataResponse> getPublicIp();
 
-    @POST("/app/2hDNLIkuSCXGUtnsm7VwaA==")
+    @POST("/app/v4KzkZpBO8Pfi8Tv585GAA==")
     Observable<PublicDataResponse> logout(@Body Map<String, String> map);
 
-    @POST("/app/tKmLDCZwJQfBmAYNe9+qJOC4h9TvbBA448LyePIgOuA=")
+    @POST("/app/1l/jPQA+ulFGDEyEXB/xDIG6VzHDBPfMOuF0+s/dfK8=")
     Observable<ProtocolUrlInfoList> getProtocolUrlv2(@Body Map<String, String> map);
 
-    @POST("/app/XoHAjwZ2obcZiHaRPY8lJ+Q0CF6G4eRgKkuIUOp/nu4=")
+    @POST("/app/3UyHO4vqqEDjtSJL/jXlzXIs2vQD387oywUZV7lYWsI=")
     Observable<BaseResponseBean> sendVerifyCode(@Body Map<String, String> map);
 
-    @POST("/app/SgGwPxKCorlX/q0Hctc+ESn/aTw99Qy8aicvKNkov+w=")
+    @POST("/app/gU+s0fdQrz2YOAw1dbfof4AJZd5B2pbBwoyr+UMOal4=")
     Observable<LoginlInfoListBase> loginByPhoneVerifyCode(@Body Map<String, String> map);
 
-    @POST("/app/QJ0b9mkySRzjZxNlDnuUWQigqFjnG3ISz4ENEZlJF+o=")
+    @POST("/app/6A4Ea6s+kOXAI+li4SV2+zl4VevpGNIe4/9HhBxJ/OE=")
     Observable<LoginlInfoListBase> staticLoginv2(@Body Map<String, String> map);
 
-    @POST("/app/22BZNNkzaP76ByNtjZ2BxWg0inbbBMT72r8RcDcRX/8=")
+    @POST("/app/cYB5keJnSh0MW2ysZuSIsmyHrJK2g53zlZnzpANilsk=")
     Observable<ProtocolUrlInfoList> addUserAction(@Body Map<String, String> map);
 
-    @POST("/app/tgMqSVLzc9Mrpd9yOfpiJuHL/r073596XMj3OU+6U2eOUQR5owUH3+GM8m7f/q1C")
+    @POST("/app/Z1Iy713y2wOtJueKj/p94IxVqYDoEqFNlJ++S4lh3fcyhBzMuiygQq+ZaLKOMr+f")
     Observable<ProtocolUrlInfoList> uploadCreditModeLoanWardAuth(@Body Map<String, String> map);
 
 
-    @POST("/app/M8OKnpOJpWn7IH7YhGU11w65EQyyMJfgbgC4Ry4pVxU=")
+    @POST("/app/LMab3fbMzJoh4VzjsMql+YtXm3xq5KHi6oo/0eY+utM=")
     Observable<ImageInfo> uploadimg(@Part MultipartBody.Part file , @Part MultipartBody.Part type);
 }

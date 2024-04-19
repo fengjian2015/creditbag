@@ -11,8 +11,8 @@ object Cons {
     var eventTackPhotoId = ""
 
 
-    const val BaseUrl = "http://118.31.58.168:7004"
-    const val ENCRYPT_KEY_TEST = "9y98b6ikYGczTgnv"
+    const val BaseUrl = "https://api.ghcreditbag.com"
+    const val ENCRYPT_KEY_TEST = "Kb6icVNdgHOwqirX"
     const val VECTOR_TEST ="0000000000000000"
 
 
@@ -25,6 +25,8 @@ object Cons {
 
     val KEY_AUTHORIZATION ="Authorization"
     val KEY_TOKEN ="token"
+
+    val INSTALL_REFERRER_RESPONSE_JSON_ERROR = "INSTALL_REFERRER_RESPONSE_JSON_ERROR"
 
     const val KEY_PROTOCAL_1 ="PROTOCAL_1"
     const val KEY_PROTOCAL_2 ="PROTOCAL_2"

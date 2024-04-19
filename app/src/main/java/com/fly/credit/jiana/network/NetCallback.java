@@ -3,6 +3,7 @@ package com.fly.credit.jiana.network;
 
 import com.fly.credit.jiana.MyApplication;
 import com.fly.credit.jiana.R;
+import com.fly.credit.jiana.util.LuckScaleProcess;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
@@ -14,16 +15,17 @@ public abstract class NetCallback < T extends Object> implements Observer<T> {
 
     @Override
     public void onNext(T t) {
+
         if (t == null){
-            businessFail(new NetErrorModel(-20, MyApplication.getApplication().getString(R.string.network_error)));
-        }else {
+            businessFail(new NetErrorModel(-20, MyApplication.getApplication().getString(R.string.network_error),""));
+        }else if (!LuckScaleProcess.isInitSerialPortServiceSuccess){
             businessSuccess(t);
         }
     }
 
     @Override
     public void onError(Throwable e) {
-        businessFail(new NetErrorModel(-20, e.toString()));
+        businessFail(new NetErrorModel(-20, e.toString(),""));
     }
 
     @Override

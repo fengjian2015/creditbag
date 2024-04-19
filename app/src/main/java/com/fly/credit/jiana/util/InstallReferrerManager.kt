@@ -4,6 +4,7 @@ import android.content.Context
 import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerStateListener
 import com.fly.credit.jiana.util.Cons
+import com.fly.credit.jiana.util.Cons.INSTALL_REFERRER_RESPONSE_JSON_ERROR
 import com.fly.credit.jiana.util.LogUtil
 import com.fly.credit.jiana.util.MMKVCacheUtil
 import org.json.JSONObject
@@ -18,6 +19,8 @@ class InstallReferrerManager {
             val referrerClient = InstallReferrerClient.newBuilder(context).build()
             referrerClient.startConnection(object :InstallReferrerStateListener{
                 override fun onInstallReferrerSetupFinished(p0: Int) {
+                    MMKVCacheUtil.putString(INSTALL_REFERRER_RESPONSE_JSON_ERROR,"onInstallReferrerSetupFinished $p0")
+                    LogUtil.d("onInstallReferrerSetupFinished $p0")
                     when(p0){
                         InstallReferrerClient.InstallReferrerResponse.OK->{
                             try {
@@ -31,7 +34,7 @@ class InstallReferrerManager {
                                     jsonObject.put("google_play_instant", it.googlePlayInstantParam)
                                     jsonObject.put("install_version", it.installVersion)
                                     val json = jsonObject.toString()
-                                    LogUtil.w("installReferrer json : $json")
+                                    LogUtil.d("installReferrer json : $json")
                                     MMKVCacheUtil.putString(Cons.INSTALL_REFERRER_RESPONSE_JSON,json)
                                 }
                                 referrerClient.endConnection()

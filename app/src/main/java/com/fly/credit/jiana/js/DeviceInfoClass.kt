@@ -66,8 +66,9 @@ object DeviceInfoClass {
                         if (!SpecialPermissionUtil.isLocServiceEnable() || !SpecialPermissionUtil.isOpenWifi()) {
                             AndroidCallBackJS.callbackJsErrorPermissions(webView,id,INVOKEFORCREDITBAGDEVICEINFO);
                         } else {
+                            LocationInfoClass.initLocationListener()
+
                             GlobalScope.launch(Dispatchers.IO){
-                                LocationInfoClass.initLocationListener()
                                 LogUtil.d("需要等待ip,开启WiFi后需要等待一段时间才可进行抓取")
                                 Thread.sleep(3000)
                                 var commentParseDataBean =

@@ -46,7 +46,6 @@ public class NetClient {
         builder.writeTimeout(60,TimeUnit.SECONDS);
         builder.sslSocketFactory(getSSLSocketFactory());
         builder.retryOnConnectionFailure(false);
-
         builder.addInterceptor(new ValueInterceptor());
         builder.addInterceptor(new EncryptIntercept());
 //        if (isAuth) {

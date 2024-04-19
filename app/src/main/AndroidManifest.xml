@@ -42,6 +42,17 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
 
+<!--        <receiver-->
+<!--            android:name=".util.InstallReferrerReceiver"-->
+<!--            android:enabled="true"-->
+<!--            android:exported="true"-->
+<!--            android:permission="android.permission.INSTALL_PACKAGES">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="com.android.vending.INSTALL_REFERRER" />-->
+<!--            </intent-filter>-->
+<!--        </receiver>-->
+
+
         <!-- facebook start -->
         <meta-data android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>

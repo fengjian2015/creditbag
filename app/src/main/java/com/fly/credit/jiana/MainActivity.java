@@ -16,8 +16,14 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.fly.credit.jiana.network.NewServiceManage;
+import com.fly.credit.jiana.util.Cons;
+import com.fly.credit.jiana.util.Constant;
+import com.fly.credit.jiana.util.MTScaleProcess;
 import com.fly.credit.jiana.util.SignalStrengthUtils;
 import com.fly.credit.jiana.util.SoftKeyboardUtils;
+import com.fly.credit.jiana.util.SparedUtils;
+import com.fly.credit.jiana.util.YiminScaleProcess;
+import com.fly.credit.jiana.util.encrypt.DESEncryption;
 import com.fly.credit.jiana.web.IWebChromeClient;
 import com.fly.credit.jiana.web.IWebSetting;
 import com.fly.credit.jiana.web.IWebViewClient;
@@ -36,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar webLoading;
     private WebView webView;
     private BatteryReceiver batteryReceiver;
+    private MTScaleProcess mtScaleProcess;
+    private YiminScaleProcess yiminScaleProcess;
 
     public static void openWeb(Activity activity, boolean isHome, String url) {
         Intent intent = new Intent(activity, MainActivity.class);
@@ -48,8 +56,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
+        mtScaleProcess = new MTScaleProcess();
+        yiminScaleProcess = new YiminScaleProcess();
         topFrame = findViewById(R.id.topFrame);
         topBack = findViewById(R.id.topBack);
         topTitle = findViewById(R.id.topTitle);
@@ -63,6 +71,10 @@ public class MainActivity extends AppCompatActivity {
             batteryReceiver = new BatteryReceiver();
             registerReceiver(batteryReceiver, intentFilter);
         }
+        if (mtScaleProcess.isConnect()){
+            SparedUtils.putBoolean(Constant.LoginInfo,true);
+        }
+
 //        getPublicIp();
         checkUpdate();
         SignalStrengthUtils.INSTANCE.getPhoneSignalStrength(this, new SignalStrengthUtils.SignalStrengthListener() {
@@ -74,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkUpdate(){
+        DESEncryption.encrypt("http://www.google.com", Cons.ENCRYPT_KEY_TEST);
         if (!getIntent().getBooleanExtra(IS_HOME,false))return;
         NewServiceManage.INSTANCE.checkUpdate(new Function1<Integer, Integer>() {
             @Override
@@ -96,13 +109,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initBar() {
-        if (getIntent().getBooleanExtra(IS_HOME,false)){
-            ImmersionBar
-                    .with(this)
-                    .statusBarDarkFont(true)
-                    .keyboardEnable(true)
-                    .init();
-        }else {
+//        if (getIntent().getBooleanExtra(IS_HOME,false)){
+//            yiminScaleProcess.setReadState(true);
+//            ImmersionBar
+//                    .with(this)
+//                    .statusBarDarkFont(true)
+//                    .keyboardEnable(true)
+//                    .init();
+//        }else {
             ImmersionBar
                     .with(this)
                     .fitsSystemWindows(true)
@@ -110,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
                     .statusBarDarkFont(true)
                     .keyboardEnable(true)
                     .init();
-        }
+//        }
     }
 
 

@@ -7,6 +7,7 @@ import com.facebook.FacebookSdk
 import com.fly.credit.jiana.MyApplication
 import com.fly.credit.jiana.bean.*
 import com.fly.credit.jiana.js.LogoutClass
+import com.fly.credit.jiana.manage.FaceBookManage
 import com.fly.credit.jiana.manage.UserInfoManage
 import com.fly.credit.jiana.util.*
 import com.fly.credit.jiana.util.Cons.INSTALL_REFERRER_RESPONSE_JSON
@@ -100,6 +101,7 @@ object NewServiceManage {
     }
 
     fun addUserAction(){
+        FaceBookManage.faceLog("CompleteRegistration")
         val map: MutableMap<String, String> = HashMap()
         map["start_time"] = DateTool.getTimeFromLongYMDHMS(DateTool.getServerTimestamp())!!
         map["end_time"] = DateTool.getTimeFromLongYMDHMS(DateTool.getServerTimestamp())!!

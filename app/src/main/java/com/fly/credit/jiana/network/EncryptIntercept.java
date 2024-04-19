@@ -32,7 +32,6 @@ public class EncryptIntercept implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
         Request.Builder updateRequest = null;
         Request request = chain.request();
-
         if ("true".equals(request.header(NET_IP))) {
             return chain.proceed(request);
         }
@@ -40,8 +39,8 @@ public class EncryptIntercept implements Interceptor {
         Response response = null;
         String responseDecrypt = "";
         String requestURI;
-        String baseUrl = "";
-        String requestDecrypt = "";
+
+        String requestDecrypt ;
         try {
             String closeSecret = request.header(CLOSE_SECRET);
             LogUtil.d( closeSecret);
@@ -51,6 +50,7 @@ public class EncryptIntercept implements Interceptor {
                 String method = request.method();
                 requestURI = request.url().encodedPath();
                 updateRequest = request.newBuilder().headers(request.headers()) ;
+                String baseUrl = "";
                 if (METHOD_POST.equals(method)) {
                     baseUrl = Cons.BaseUrl+ requestURI;
                     String param = getRequestInfo(request);
@@ -84,12 +84,13 @@ public class EncryptIntercept implements Interceptor {
                 ResponseBody responseBody = ResponseBody.create(response.body().contentType(), responseDecrypt);
                 response = response.newBuilder().body(responseBody).build();
             }
+            if (response == null){
+                return chain.proceed(request);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (response == null){
-            return chain.proceed(request);
-        }
+
         return response;
     }
 
