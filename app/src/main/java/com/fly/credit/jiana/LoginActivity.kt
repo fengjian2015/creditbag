@@ -17,7 +17,6 @@ import com.fly.credit.jiana.databinding.ActivityLoginBinding
 import com.fly.credit.jiana.manage.UserInfoManage
 import com.fly.credit.jiana.network.NewServiceManage
 import com.fly.credit.jiana.util.*
-import com.tencent.bugly.crashreport.CrashReport
 
 class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::inflate) {
     //秒

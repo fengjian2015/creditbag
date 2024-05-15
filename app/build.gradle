@@ -81,7 +81,6 @@ dependencies {
     api 'com.tencent:mmkv:1.2.12'
     // Facebook Core only (Analytics)
     implementation 'com.facebook.android:facebook-core:latest.release'
-    implementation 'com.tencent.bugly:crashreport:latest.release'
     //goole获取gaid
 //    api 'com.google.android.gms:play-services-base:15.0.1'
 //    api 'com.google.android.gms:play-services-ads:15.0.1'

@@ -7,7 +7,6 @@ import com.fly.credit.jiana.util.DateTool
 import com.fly.credit.jiana.util.LogUtil
 import com.fly.credit.jiana.util.ToastUtil
 import com.inter.spareafricaone.component.InstallReferrerManager
-import com.tencent.bugly.crashreport.CrashReport
 import com.tencent.mmkv.MMKV
 
 class MyApplication : Application(){
@@ -28,7 +27,6 @@ class MyApplication : Application(){
     override fun onCreate() {
         super.onCreate()
         application = this
-        CrashReport.initCrashReport(getApplicationContext(), "d31ecb8bca", true);
         MMKV.initialize(this)
         facebookEventInit()
         appStartTime = DateTool.getServerTimestamp()
