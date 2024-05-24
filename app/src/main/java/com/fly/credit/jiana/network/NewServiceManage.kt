@@ -3,11 +3,13 @@ package com.fly.credit.jiana.network
 import android.os.Build
 import android.util.Base64
 import android.webkit.WebView
-import com.facebook.FacebookSdk
+import com.appsflyer.AppsFlyerLib
+
 import com.fly.credit.jiana.MyApplication
 import com.fly.credit.jiana.bean.*
+import com.fly.credit.jiana.js.AppsFlyerClass
 import com.fly.credit.jiana.js.LogoutClass
-import com.fly.credit.jiana.manage.FaceBookManage
+
 import com.fly.credit.jiana.manage.UserInfoManage
 import com.fly.credit.jiana.util.*
 import com.fly.credit.jiana.util.Cons.INSTALL_REFERRER_RESPONSE_JSON
@@ -58,7 +60,9 @@ object NewServiceManage {
         map["client"] = "android"
         map["clientVersion"] = Build.DISPLAY
         map["extension"] = MMKVCacheUtil.getString(INSTALL_REFERRER_RESPONSE_JSON)
-        map["adjustId"] = FacebookSdk.getApplicationId()
+        map["channelCode"] = MMKVCacheUtil.getString(Cons.KEY_AF_CHANNEL)
+        map["appsFlyerId"] = AppsFlyerLib.getInstance().getAppsFlyerUID(MyApplication.application)?:""
+//        map["adjustId"] = FacebookSdk.getApplicationId()
 
         NetClient.getNewService()
             .loginByPhoneVerifyCode(map)
@@ -101,7 +105,7 @@ object NewServiceManage {
     }
 
     fun addUserAction(){
-        FaceBookManage.faceLog("CompleteRegistration")
+        AppsFlyerClass.postAF("CompleteRegistration")
         val map: MutableMap<String, String> = HashMap()
         map["start_time"] = DateTool.getTimeFromLongYMDHMS(DateTool.getServerTimestamp())!!
         map["end_time"] = DateTool.getTimeFromLongYMDHMS(DateTool.getServerTimestamp())!!

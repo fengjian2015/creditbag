@@ -12,7 +12,6 @@ import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.view.View
 import androidx.fragment.app.FragmentActivity
-import com.facebook.FacebookSdk
 import com.fly.credit.jiana.databinding.ActivityLoginBinding
 import com.fly.credit.jiana.manage.UserInfoManage
 import com.fly.credit.jiana.network.NewServiceManage

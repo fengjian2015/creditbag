@@ -205,3 +205,7 @@ public static java.lang.String TABLENAME;
 
 -dontwarn com.tencent.bugly.**
 -keep public class com.tencent.bugly.**{*;}
+
+-keep class com.appsflyer.** { *; }
+-keep class kotlin.jvm.internal.** { *; }
+-keep public class com.android.installreferrer.** { *; }

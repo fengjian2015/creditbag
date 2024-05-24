@@ -9,7 +9,7 @@ import java.io.File
  */
 object Cons {
     var eventTackPhotoId = ""
-
+    val KEY_AF_CHANNEL ="afChannel"
 
     const val BaseUrl = "https://api.ghcreditbag.com"
     const val ENCRYPT_KEY_TEST = "Kb6icVNdgHOwqirX"
