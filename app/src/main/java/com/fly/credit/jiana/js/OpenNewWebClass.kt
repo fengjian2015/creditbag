@@ -7,8 +7,12 @@ import com.fly.credit.jiana.bean.CopyBean
 import com.fly.credit.jiana.util.ActivityManager
 import com.fly.credit.jiana.util.Cons
 import com.fly.credit.jiana.util.SparedUtils
+import com.fly.credit.jiana.util.ToastUtil
 import com.fly.credit.jiana.web.AndroidCallBackJS
 import com.google.gson.Gson
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 /**
  * Time：2024/3/16
@@ -18,16 +22,17 @@ import com.google.gson.Gson
 object OpenNewWebClass {
     fun openNew(webView: WebView, id: String, data: Any?) {
         try {
-            var commentParseDataBean = Gson().fromJson(data.toString(), CopyBean::class.java)
+            val s = Gson().toJson(data)
+            var commentParseDataBean = Gson().fromJson(s, CopyBean::class.java)
             MainActivity.openWeb(
                 ActivityManager.getCurrentActivity() as AppCompatActivity,
                 false,
                 commentParseDataBean.value)
-            AndroidCallBackJS.callBackJsSuccess(webView,id,Cons.INVOKEFORCREDITBAGAPPSERVICETIME)
+            AndroidCallBackJS.callBackJsSuccess(webView,id,Cons.INVOKEFORCREDITBAGFORWARDOUTSIDE)
         } catch (e: Exception) {
             e.printStackTrace()
-            AndroidCallBackJS.callbackJsErrorOther(webView, id, Cons.INVOKEFORCREDITBAGAPPSERVICETIME,
-                e.toString()
+            AndroidCallBackJS.callbackJsErrorOther(webView, id, Cons.INVOKEFORCREDITBAGFORWARDOUTSIDE,
+                e.printStackTrace().toString()
             )
         }
     }

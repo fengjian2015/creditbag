@@ -17,8 +17,9 @@ import com.google.gson.Gson
  */
 object OpenBrowserClass {
     fun openBrowser(webView: WebView, id: String, data: Any?) {
-        var commentParseDataBean = Gson().fromJson(data.toString(), CopyBean::class.java)
         try {
+            val s = Gson().toJson(data)
+            var commentParseDataBean = Gson().fromJson(s, CopyBean::class.java)
             var url = commentParseDataBean.value
             if (url != null && !url.startsWith("http") && !url.startsWith("file")) {
                 url = "https://$url"
