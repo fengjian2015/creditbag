@@ -30,7 +30,7 @@
             android:gravity="center"
             android:textStyle="bold"
             android:textSize="18sp"
-            android:text="New Version Availabl"/>
+            android:text="New Version Available"/>
         <Button
             android:id="@+id/buttonUpload"
             android:layout_width="match_parent"

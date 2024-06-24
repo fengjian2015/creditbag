@@ -96,6 +96,9 @@ public class MainActivity extends AppCompatActivity {
                 if (integer == 3){
                     UpdateDialog dialog =new UpdateDialog(UserInfoManage.INSTANCE.getUserInfo());
                     dialog.show(MainActivity.this.getSupportFragmentManager(), "update'");
+                }else if (integer == 4){
+                    UpdateDialog dialog =new UpdateDialog(UserInfoManage.INSTANCE.getUserInfo());
+                    dialog.show(MainActivity.this.getSupportFragmentManager(), "update'");
                 }
                 return 1;
             }

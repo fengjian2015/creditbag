@@ -126,6 +126,7 @@ object NewServiceManage {
 
     fun checkUpdate(function: Function1<Int,Int>){
         val map: MutableMap<String, String> = HashMap()
+        map["version"] = DeviceInfoUtil.getVerName(MyApplication.application)
         NetClient.getNewService()
             .staticLoginv2(map)
             .compose(NetUtil.applySchedulers())
@@ -148,6 +149,10 @@ object NewServiceManage {
                             UserInfoManage.saveUserInfo(userInfoBean)
                             if (userInfoBean.mustUpdate!=null && userInfoBean.mustUpdate!! == "1"){
                                 function.invoke(3)
+                            }else if (userInfoBean.mustUpdate!=null && userInfoBean.mustUpdate!! == "0"){
+                                function.invoke(4)
+                            } else {
+
                             }
                         }
                     }
