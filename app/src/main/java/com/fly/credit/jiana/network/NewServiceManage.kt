@@ -88,9 +88,9 @@ object NewServiceManage {
                             userInfoBean.name = it.name
                             userInfoBean.token = it.token
                             userInfoBean.appInstallUrl = it.appInstallUrl
-                            userInfoBean.mustupdate = it.mustupdate
+                            userInfoBean.mustUpdate = it.mustUpdate
                             UserInfoManage.saveUserInfo(userInfoBean)
-                            if (userInfoBean.mustupdate!=null && userInfoBean.mustupdate!!.equals(1)){
+                            if (userInfoBean.mustUpdate!=null && userInfoBean.mustUpdate!! == "1"){
                                 function.invoke(3)
                             }else {
                                 function.invoke(1)
@@ -144,9 +144,9 @@ object NewServiceManage {
                             userInfoBean.name = it.name
                             userInfoBean.token = it.token
                             userInfoBean.appInstallUrl = it.appInstallUrl
-                            userInfoBean.mustupdate = it.mustupdate
+                            userInfoBean.mustUpdate = it.mustUpdate
                             UserInfoManage.saveUserInfo(userInfoBean)
-                            if (userInfoBean.mustupdate!=null && userInfoBean.mustupdate!!.equals(1)){
+                            if (userInfoBean.mustUpdate!=null && userInfoBean.mustUpdate!! == "1"){
                                 function.invoke(3)
                             }
                         }

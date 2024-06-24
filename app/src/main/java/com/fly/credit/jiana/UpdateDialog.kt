@@ -12,6 +12,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.fly.credit.jiana.bean.UserInfoBean
+import com.fly.credit.jiana.util.ActivityManager
 
 class UpdateDialog constructor(updateBean :UserInfoBean): DialogFragment() {
     private var updateBean : UserInfoBean
@@ -40,19 +41,22 @@ class UpdateDialog constructor(updateBean :UserInfoBean): DialogFragment() {
         tvContent =rootView.findViewById(R.id.tv_content)
         buttonUpload =rootView.findViewById(R.id.buttonUpload)
         Later = rootView.findViewById(R.id.Later)
+        Later.setOnClickListener {
+            dismiss()
+        }
         initData()
         return rootView
     }
 
     private fun initData(){
-        isCancelable = updateBean.mustupdate != "1"
+        isCancelable = updateBean.mustUpdate != "1"
         initLaterButton()
         buttonUpload.setOnClickListener {
             val intent = Intent()
             intent.action = "android.intent.action.VIEW" //Intent.ACTION_VIEW
             val content_url = Uri.parse(updateBean.appInstallUrl)
             intent.data = content_url
-            startActivity(intent)
+            ActivityManager.getCurrentActivity()?.startActivity(intent)
         }
 
     }

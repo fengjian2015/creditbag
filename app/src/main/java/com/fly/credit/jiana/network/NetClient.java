@@ -46,17 +46,18 @@ public class NetClient {
         builder.writeTimeout(60,TimeUnit.SECONDS);
         builder.sslSocketFactory(getSSLSocketFactory());
         builder.retryOnConnectionFailure(false);
-        builder.addInterceptor(new ValueInterceptor());
-        builder.addInterceptor(new EncryptIntercept());
-//        if (isAuth) {
-//            builder.addInterceptor(new GzipRequestInterceptor());
-//        }
         if (BuildConfig.DEBUG) {
             HttpLoggingInterceptor loggingInterceptor =new HttpLoggingInterceptor("NetClientLog");
             loggingInterceptor.setPrintLevel(HttpLoggingInterceptor.Level.BODY);
             loggingInterceptor.setColorLevel(Level.INFO);
             builder.addInterceptor(loggingInterceptor);
         }
+        builder.addInterceptor(new ValueInterceptor());
+        builder.addInterceptor(new EncryptIntercept());
+//        if (isAuth) {
+//            builder.addInterceptor(new GzipRequestInterceptor());
+//        }
+
 
         Retrofit build = new Retrofit.Builder()
                 .baseUrl(Cons.BaseUrl)

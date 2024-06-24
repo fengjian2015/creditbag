@@ -15,6 +15,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.fly.credit.jiana.manage.UserInfoManage;
 import com.fly.credit.jiana.network.NewServiceManage;
 import com.fly.credit.jiana.util.Cons;
 import com.fly.credit.jiana.util.Constant;
@@ -91,8 +93,10 @@ public class MainActivity extends AppCompatActivity {
         NewServiceManage.INSTANCE.checkUpdate(new Function1<Integer, Integer>() {
             @Override
             public Integer invoke(Integer integer) {
-//                UpdateDialog dialog =new UpdateDialog(UserInfoManage.INSTANCE.getUserInfo());
-//                dialog.show(MainActivity.this.getSupportFragmentManager(), "update'");
+                if (integer == 3){
+                    UpdateDialog dialog =new UpdateDialog(UserInfoManage.INSTANCE.getUserInfo());
+                    dialog.show(MainActivity.this.getSupportFragmentManager(), "update'");
+                }
                 return 1;
             }
         });

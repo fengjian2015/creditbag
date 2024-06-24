@@ -8,7 +8,7 @@ class LoginlInfoList :Serializable{
     var name :String = ""
     var phone :String = ""
     var isNew :Boolean = true
-    var mustupdate: String =""
+    var mustUpdate: String =""
     var appInstallUrl : String = ""
     override fun toString(): String {
         return "LoginlInfoList(homeUrl='$homeUrl', token='$token', name='$name', phone='$phone', isNew=$isNew)"

@@ -11,10 +11,10 @@ class UserInfoBean : java.io.Serializable {
     var name : String? = ""
     var phone : String? = ""
     var isNew : Boolean? = true
-    var mustupdate: String? =""
+    var mustUpdate: String? =""
     var appInstallUrl : String? = ""
     override fun toString(): String {
-        return "UserInfoBean(homeUrl=$homeUrl, token=$token, name=$name, phone=$phone, isNew=$isNew, mustupdate='$mustupdate', appInstallUrl='$appInstallUrl')"
+        return "UserInfoBean(homeUrl=$homeUrl, token=$token, name=$name, phone=$phone, isNew=$isNew, mustupdate='$mustUpdate', appInstallUrl='$appInstallUrl')"
     }
 
 }
