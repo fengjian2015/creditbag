@@ -96,7 +96,7 @@ class WebJs constructor(context: Context,webView: WebView){
         }
     }
 
-    fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         ActivityResult.onActivityResult(requestCode,resultCode,data,webView,eventSelectContactId)
     }
 

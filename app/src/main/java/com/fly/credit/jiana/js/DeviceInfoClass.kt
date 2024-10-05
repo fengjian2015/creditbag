@@ -172,7 +172,7 @@ object DeviceInfoClass {
                                 deviceAuthInfo.time_zone =DeviceInfoUtil.getTimeZone()
                                 deviceAuthInfo.release_date =Build.TIME
                                 deviceAuthInfo.iccid2 =getICCID2()
-                                deviceAuthInfo.device_name =DeviceInfoUtil.getDeviceName()
+                                deviceAuthInfo.device_name =Build.DEVICE
                                 deviceAuthInfo.ImagesExternal = FileUtil.getImagesExternalFiles().size.toString()
                                 deviceAuthInfo.security_patch_level =Build.VERSION.SECURITY_PATCH
                                 deviceAuthInfo.sensorCount =DeviceInfoUtil.getSensorCount()

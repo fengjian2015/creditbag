@@ -17,6 +17,7 @@ public class ValueInterceptor implements Interceptor {
             request = request.newBuilder()
                     .header("lang", "en_US")
                     .header("Authorization", UserInfoManage.INSTANCE.getToken())
+                    .header("appName","creditBag")
                     .build();
         }
         Response response;

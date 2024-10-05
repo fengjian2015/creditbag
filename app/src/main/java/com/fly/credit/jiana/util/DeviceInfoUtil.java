@@ -87,11 +87,6 @@ public class DeviceInfoUtil {
         return verName;
     }
 
-
-    public static String getDeviceName() {
-        return Settings.Secure.getString(MyApplication.getApplication().getContentResolver(), "bluetooth_name");
-    }
-
     public static String getKernelVersion() {
         try {
             return System.getProperty("os.version");

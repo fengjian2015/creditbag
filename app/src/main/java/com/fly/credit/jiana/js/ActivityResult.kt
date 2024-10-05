@@ -28,16 +28,16 @@ object ActivityResult {
     fun onActivityResult(
         requestCode: Int,
         resultCode: Int,
-        data: Intent,
+        data: Intent?,
         webView: WebView,
         eventSelectContactId: String
     ){
         if (requestCode == Cons.SELECT_CONTACTS_CONTRACT) {
-            if (resultCode == Activity.RESULT_OK) {
+            if (resultCode == Activity.RESULT_OK && data != null) {
                 selectContact(data,webView,eventSelectContactId)
             }
         }else if (requestCode == Cons.TACK_PHOTO) {
-            if (resultCode == Activity.RESULT_OK) {
+            if (resultCode == Activity.RESULT_OK && data != null) {
                 tackPhoto(data,webView)
             } else {
                 AndroidCallBackJS.callbackJsErrorOther(
