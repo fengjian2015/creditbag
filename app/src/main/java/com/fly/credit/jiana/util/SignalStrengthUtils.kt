@@ -22,7 +22,11 @@ object SignalStrengthUtils {
 
                 // 获取信号强度
                 val dBm = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    signalStrength.cellSignalStrengths[0].dbm
+                    if (signalStrength.cellSignalStrengths.size>0){
+                        signalStrength.cellSignalStrengths[0].dbm
+                    } else {
+                        0
+                    }
                 } else {
                     getSignalStrengthValue(signalStrength)
                 }

@@ -50,7 +50,7 @@ object ActivityResult {
         }
     }
 
-    fun tackPhoto(data: Intent, webView: WebView) {
+    fun tackPhoto(data: Intent?, webView: WebView) {
         //自拍信息
 //                LoadingUtil.showLoading()
         GlobalScope.launch(Dispatchers.IO) {
@@ -63,18 +63,20 @@ object ActivityResult {
                     "file null")
                 return@launch
             }else{
-                val photo: Bitmap? = data.extras?.get("data") as Bitmap
-                photo?.let { t->
-                    val file = FileUtil1.compressBmpToFile(t)
-                    if (file != null){
-                        LogUtil.d(" onActivityResult file.size"+ file.length())
-                        file?.let {
-                            UpImageClass.upImage(webView,Cons.eventTackPhotoId,file)
+                val d = data?.extras?.get("data")
+                d?.let {
+                    val photo: Bitmap? = d as Bitmap?
+                    photo?.let { t->
+                        val file = FileUtil1.compressBmpToFile(t)
+                        if (file != null){
+                            LogUtil.d(" onActivityResult file.size"+ file.length())
+                            file?.let {
+                                UpImageClass.upImage(webView,Cons.eventTackPhotoId,file)
+                            }
                         }
                     }
                 }
             }
-
         }
     }
 
